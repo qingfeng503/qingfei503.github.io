@@ -1,1 +1,1 @@
-export const WEBSITE_HOST_URL = 'http://ginonotes.com'
+export const WEBSITE_HOST_URL = 'https://ginonotes.com'
