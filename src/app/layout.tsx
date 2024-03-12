@@ -5,6 +5,7 @@ import ThemeSwitch from '@/components/ThemeSwitch'
 import { WEBSITE_HOST_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Analytics } from "@vercel/analytics/react"
 import './global.css'
 
 const meta = {
@@ -93,6 +94,7 @@ export default function RootLayout({
             </Container>
           </footer>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
