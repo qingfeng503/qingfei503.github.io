@@ -10,16 +10,16 @@ import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   return allPosts.map((post) => ({
-    slug: post._raw.flattenedPath,
+    slug: [post.category, ...post.slug.split('/')]
   }))
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string[] }
 }): Promise<Metadata | undefined> {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug)
+  const post = allPosts.find((post) => post.url === '/posts/' + params.slug.join('/'))
 
   if (!post) {
     return
@@ -53,8 +53,8 @@ const mdxComponents: MDXComponents = {
   Image: (props) => <NextImage className="rounded-lg" {...props} />,
 }
 
-const PostLayout = ({ params }: { params: { slug: string } }) => {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug)
+const PostLayout = ({ params }: { params: { slug: string[] } }) => {
+  const post = allPosts.find((post) => post.url === '/posts/' + params.slug.join('/'))
 
   if (!post) {
     notFound()

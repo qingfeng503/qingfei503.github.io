@@ -24,11 +24,31 @@ const Post = defineDocumentType(() => ({
       description: 'The description of the post',
       required: true,
     },
+    category: {
+      type: 'string',
+      description: 'The category of the post',
+      required: true,
+    },
+    tags: {
+      type: 'string',
+      description: 'The tags of the post',
+      required: true,
+    },
+    cover: {
+      type: 'string',
+      description: 'The cover image of the post',
+      required: false,
+    },
+    slug: {
+      type: 'string',
+      description: 'The slug of the post',
+      required: true,
+    },
   },
   computedFields: {
     url: {
       type: 'string',
-      resolve: (doc) => `/posts/${doc._raw.flattenedPath}`,
+      resolve: (doc) => `/posts/${doc.category}/${doc.slug}`,
     },
   },
 }))
