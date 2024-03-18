@@ -83,16 +83,6 @@ export default function RootLayout({
           <main className='border-t border-gray-200 pt-4 dark:border-gray-700'>
             <Container>{children}</Container>
           </main>
-          <footer className="py-16">
-            <Container>
-              <p>
-                Build by {' '}
-                <Link className="link" href="https://twitter.com/hongming731">
-                  Gino
-                </Link>
-              </p>
-            </Container>
-          </footer>
         </ThemeProvider>
         <Analytics />
       </body>

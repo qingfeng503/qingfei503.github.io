@@ -11,7 +11,7 @@ export function PostCard(post: Post) {
           {post.title}
         </Link>
       </h2>
-      <p className="text-muted-foreground line-clamp-3">
+      <p className="text-muted-foreground line-clamp-5">
         {post.description}
       </p>
       <div className="text-sm text-muted-foreground">
