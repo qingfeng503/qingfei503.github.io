@@ -74,7 +74,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark">
           <header className="py-4">
             <Container>
-              <div className="flex items-center justify-between">
+              <div className="container max-w-[64rem] flex items-center justify-between">
                 <Navigation />
                 <ThemeSwitch />
               </div>
