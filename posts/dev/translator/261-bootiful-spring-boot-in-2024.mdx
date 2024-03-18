@@ -1,5 +1,5 @@
 ---
-title: 【翻译】2024 年的 Spring Boot 之美
+title: 2024 年的 Spring Boot 之美【译】
 description: 文章《Bootiful Spring Boot in 2024 (part 1)》由 Josh Long 撰写，介绍了使用 Spring Boot 开发应用程序的新趋势和最佳实践。Josh 强调现在是 Java 和 Spring Boot 开发者的黄金时期，Spring Boot 的功能和易用性在过去几年里有了显著提升。Josh 讲解了如何使用 Java 21 的新特性，特别强调了通过 GraalVM 实现的 Native Image 支持。他还讨论了如何通过 Docker Compose 简化数据库连接和管理过程，并展示了 Spring Boot 的自动配置功能如何简化开发流程。文章还深入讨论了 Java 21 的改进之处，如更快的性能、更丰富的语法，以及通过记录（Records）和数据导向编程的支持。Josh 使用了一个简单的示例来说明如何定义和使用记录（Record），并提出了利用 Spring Boot 和 Java 21 的新功能如虚拟线程来提高开发效率和应用性能的可能性。
 date: 2024-03-18
 category: dev
@@ -7,6 +7,8 @@ tags: spring, spring-boot, java, spring-ai
 slug: bootiful-spring-boot-in-2024
 ---
 
+> AI 推荐语：文章《Bootiful Spring Boot in 2024 (part 1)》由 Josh Long 撰写，介绍了使用 Spring Boot 开发应用程序的新趋势和最佳实践。Josh 强调现在是 Java 和 Spring Boot 开发者的黄金时期，Spring Boot 的功能和易用性在过去几年里有了显著提升。Josh 讲解了如何使用 Java 21 的新特性，特别强调了通过 GraalVM 实现的 Native Image 支持。他还讨论了如何通过 Docker Compose 简化数据库连接和管理过程，并展示了 Spring Boot 的自动配置功能如何简化开发流程。文章还深入讨论了 Java 21 的改进之处，如更快的性能、更丰富的语法，以及通过记录（Records）和数据导向编程的支持。Josh 使用了一个简单的示例来说明如何定义和使用记录（Record），并提出了利用 Spring Boot 和 Java 21 的新功能如虚拟线程来提高开发效率和应用性能的可能性。
+ 
 原文链接：
 [Bootiful Spring Boot in 2024 (part 1)](https://spring.io/blog/2024/03/17/bootiful-spring-boot-in-2024-part-1)
 
@@ -306,7 +308,7 @@ class StoryController {
 
 使用 CMD+Shift+F9 重新加载应用程序，然后访问端点：`http://localhost:8080/story`。LLM 可能需要几秒钟来产生响应，所以准备好一杯咖啡或一杯水，享受这短暂但令人满足的时刻。
 
-![故事时间 AI 响应](https://raw.githubusercontent.com/joshlong-attic/bootiful-spring-boot-2024-blog/main/service/images/story-time-ai-response.png)
+![AI 响应](/images/261/story-time-ai-response.png)
 
 我浏览器中的 JSON 响应，启用了 JSON 格式化插件。
 
@@ -422,13 +424,13 @@ spring.threads.virtual.enabled=true
 
 我们如何使这个东西尽可能高效和优化？在我们深入研究之前，我的朋友们，重要的是要记住 Java 已经非常非常非常高效了。我喜欢这篇来自 2018 年的[博客](https://thenewstack.io/which-programming-languages-use-the-least-electricity/)，在 COVID 大流行之前，或 _BC_。
 
-![Which Programming Languages Use the Least Electricity?](https://storage.googleapis.com/cdn.thenewstack.io/media/2018/05/3730357d-results-energy-time-and-memory-usage-screenshot-from-research-paper.png)
+![Which Programming Languages Use the Least Electricity?](/images/261/3730357d-results-energy-time-and-memory-usage-screenshot-from-research-paper.png)
 
 它研究了哪些语言使用的电力最少，或者是最节能的。C 是最节能的。它使用的电力最少。1.0。它是基准。它很高效......对于**机器**。不是人！绝对，_不是_ 人。
 
 然后我们有 Rust 和它的零成本抽象。做得好。
 
-然后我们有 C++... ![gross](https://raw.githubusercontent.com/joshlong-attic/bootiful-spring-boot-2024-blog/main/service/images/gross.gif)
+然后我们有 C++... ![gross](/images/261/gross.gif)
 
 C++ 是恶心的！继续……
 
@@ -446,7 +448,7 @@ C++ 是恶心的！继续……
 
 然后..我们有 Python。而这，嗯，这确实让我非常难过！我*爱* Python！我从 1990 年代开始使用 Python！比尔·克林顿是总统当我第一次学习 Python 时！但这些数字*不* 是很棒。想想看。75.88。我们就四舍五入到 76。我数学不太好。但你知道谁数学好吗？该死的 Python！让我们问它。
 
-![python doing math](https://raw.githubusercontent.com/joshlong-attic/bootiful-spring-boot-2024-blog/main/service/images/python-doing-math.png)
+![python doing math](/images/261/python-doing-math.png)
 
 38！这意味着如果你在 Java 中运行一个程序，并且运行它所需的能量产生了一些碳，这些碳最终被困在大气中，提高了温度，
 
@@ -474,31 +476,29 @@ Java 编程语言垃圾回收器让我们能够编写中等质量的软件并有
 
 它花的时间如此之长，以至于它有点阻碍了我的流程。它让我停下来，等待。我就像前面这篇博客中提到的那些平台线程：_被阻塞_！我开始无聊。等待。等待。我现在终于明白这个[著名的 XKCD 漫画](https://xkcd.com/303/)。
 
-![XKCD](https://imgs.xkcd.com/comics/compiling.png)
+![XKCD](/images/261/compiling.png)
 
 有时我开始哼歌，或主题歌，或电梯音乐。你知道[电梯音乐](https://en.wikipedia.org/wiki/Elevator_music)听起来像什么，对吧？无尽，无休止。所以，我想，如果每个人都听到电梯音乐，那不是很好吗？[所以我问了](https://github.com/oracle/graal/issues/5327)。我得到了一些很棒的回复。
 
 一个建议，来自我们的朋友，我们应该从 Nintendo 64 视频游戏的原声带中播放这首电梯音乐，皮尔斯·布鲁斯南（Pierce Brosnan）首次扮演詹姆斯·邦德（James Bond），_Goldeneye_。我喜欢它。
 
-![adinn elevator music](https://raw.githubusercontent.com/joshlong-attic/bootiful-spring-boot-2024-blog/main/service/images/adinn-elevator-music.png)
+![adinn elevator music](/images/261/adinn-elevator-music.png)
 
 _Goldeneye_ 有一些了不起的电梯音乐！
 
 有一个回应建议有一个哔哔声会很有用。完全同意。我的愚蠢微波炉在完成时会发出 _叮！_ 声。我的多百万行编译器为什么不行呢？
 
-![ivan beeps](https://raw.githubusercontent.com/joshlong-attic/bootiful-spring-boot-2024-blog/main/service/images/ivan-beeps.png)
+![ivan beeps](/images/261/ivan-beeps.png)
 
 _叮！_
 
 然后我们得到了这个回应，来自我最喜欢的专家之一，[Dr. Niephaus](https://twitter.com/fniephaus)，他在 GraalVM 团队工作。他说增加电梯音乐只会修复问题的症状，而不是导致问题的原因，即使 GraalVM 在时间和内存方面更加高效。
 
-![doctor
-niephaus](https://raw.githubusercontent.com/joshlong-attic/bootiful-spring-boot-2024-blog/main/service/images/doctor-niephaus.png)
+![doctor niephaus](/images/261/doctor-niephaus.png)
 
 好吧。但他确实分享了这个有前景的原型！
 
-![graalvm
-prototype](https://raw.githubusercontent.com/joshlong-attic/bootiful-spring-boot-2024-blog/main/service/images/graalvm-prototype.png)
+![graalvm prototype](/images/261/graalvm-prototype.png)
 
 我敢肯定它很快就会合并......
 
