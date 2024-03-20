@@ -233,7 +233,49 @@ Hibernate Validator 7 是 Jakarta Bean Validation 3.0 的实现版本之一，�
 
 ## 在 Spring Web 中使用 Java Bean Validation
 
-### 引入依赖
+### 创建项目
+
+为了方便演示，我们创建一个 Spring Boot 项目，使用 Maven 构建工具。
+
+![create project](/images/201/create_project.png)
+
+添加 Spring Web 和 Validation 依赖，同时建议添加 DevTools 和 Lombok 依赖，方便开发。
+
+![choose dependencies](/images/201/choose_dependencies.png)
+
+添加之后，工程的 pom.xml 应该包含如下依赖，同时查看依赖关系可以看到 其中 `spring-boot-starter-validation` 依赖了 `hibernate-validator` 实现，而后者依赖了 `jakarta.validation-api`。
+
+```xml
+<dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+```
+
+![show dependencies](/images/201/show_dependencies.png)
 
 ### 示例
 
