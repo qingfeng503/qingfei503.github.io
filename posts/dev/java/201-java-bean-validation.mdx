@@ -279,7 +279,242 @@ Hibernate Validator 7 是 Jakarta Bean Validation 3.0 的实现版本之一，�
 
 ### 示例
 
+#### 新建一个账户创建和更新的 Controller 类和接口
+
+```java
+@Slf4j
+@RestController
+public class AccountController {
+
+    /**
+     * Create account
+     *
+     * @param accountRequest account request
+     * @return response with account id
+     */
+    @PostMapping("/api/createAccount")
+    public Response<String> createAccount(@Validated(value = {Default.class, Create.class}) @RequestBody AccountRequest accountRequest) {
+        log.info("Create account: {}", accountRequest);
+        // TODO: Create account
+        return Response.success("123456");
+    }
+
+    @PostMapping("/api/updateAccount")
+    public Response<String> updateAccount(@Validated(value = {Default.class, Update.class}) @RequestBody AccountRequest accountRequest) {
+        log.info("Update account: {}", accountRequest);
+        // TODO: Update account
+        return Response.success(accountRequest.getAccountId());
+    }
+}
+```
+
+请注意，这里使用了 `@Validated` 注解，而不是 `@Valid` 注解，`@Validated` 注解是 Spring 提供的，它支持分组校验，而 `@Valid` 注解是 Java Bean Validation 提供的，它不支持分组校验。
+另外在创建和更新的方法上，分别使用了 `@Validated(value = {Default.class, Create.class})` 和 `@Validated(value = {Default.class, Update.class})` 注解，这样就可以根据不同的场景使用不同的校验规则。
+
+#### 创建一个账户请求的 Java Bean 并增加校验注解
+
+```java
+@Data
+public class AccountRequest implements Serializable {
+
+    /**
+     * Account id, required for update
+     */
+    @NotNull(message = "Account Id is required for update", groups = {Update.class})
+    private String accountId;
+
+    /**
+     * Account number, should be unique, length should be less than 32
+     */
+    @NotNull(message = "Account No is required")
+    @Size(max = 32, message = "Account No length should be less than 32")
+    @UniqueAccountNo(groups = {Create.class})
+    private String accountNo;
+
+    /**
+     * Account name, should not be empty, length should be less than 100
+     */
+    @NotNull(message = "Account Name is required")
+    @Size(max = 100, message = "Account Name length should be less than 100")
+    private String accountName;
+
+    /**
+     * Account type, should be one of [SAVING, CURRENT, FIXED]
+     */
+    @NotNull(message = "Account Type is required")
+    @InEnum(value = AccountTypeEnum.class, message = "Account Type should be one of [SAVING, CURRENT, FIXED]")
+    private String accountType;
+
+    /**
+     * Account balance, should not be null, should be greater than 0
+     */
+    @NotNull(message = "Account Balance is required")
+    @Range(min = 0, message = "Account Balance should be greater than 0")
+    private BigDecimal balance;
+
+    /**
+     * Account expiration date, should be in the future
+     */
+    @NotNull(message = "Account Expiration Date is required")
+    @Future(message = "Account Expiration Date should be in the future")
+    private Date expireDate;
+
+    /**
+     * Address list, should not be empty
+     */
+    @Valid
+    @NotNull(message = "Address List should not be empty")
+    @Size(min = 1, message = "Address List should not be empty")
+    private List<@NotNull AddressInfo> addressList;
+}
+```
+
+这里我们定义了一个 `AccountRequest` 类，它包含了账户的基本信息，如账户号、账户名、账户类型、账户余额、账户到期日期和地址列表。
+在 `AccountRequest` 类中，我们使用了一些内置常用的校验注解，如 `@NotNull`、`@Size`、`@Range`、`@Future`。同时我们还定义了一个自定义的校验注解 `@InEnum`、`@UniqueAccountNo`，用于校验枚举的有效值及账户号的唯一性。
+其中 `@Valid` 注解用于校验嵌套对象，这里我们嵌套了一个 `AddressInfo` 类，它包含了地址的基本信息，如地址类型、地址、邮编和手机号码。
+
+#### 创建一个地址信息的 Java Bean 并增加校验注解
+
+```java
+@Data
+public class AddressInfo implements Serializable {
+
+    /**
+     * Address Type, should be one of [HOME, OFFICE]
+     */
+    @NotNull(message = "Address Type is required")
+    @InEnum(value = AddressTypeEnum.class, message = "Address Type should be one of [HOME, OFFICE]")
+    private String addressType;
+
+    /**
+     * Address, should not be empty, length should be less than 200
+     */
+    @NotNull(message = "Address is required")
+    @Size(max = 200, message = "Address length should be less than 200")
+    private String address;
+
+    /**
+     * Zip code, should not be empty, length should be 6 digits
+     */
+    @NotNull(message = "Zip Code is required")
+    @Pattern(regexp = "^[0-9]{6}$", message = "Zip Code should be 6 digits")
+    private String zipCode;
+
+    /**
+     * Mobile phone number, should not be empty, length should be 11
+     */
+    @NotNull(message = "Mobile Phone Number is required")
+    @Pattern(regexp = "^1[0-9]{10}$", message = "Mobile Phone Number should be 11 digits")
+    private String mobilePhoneNo;
+}
+```
+
+在 `AddressInfo` 类中，我们同样使用了一些内置常用的校验注解，如 `@NotNull`、`@Size`、`@Pattern`。同时我们还定义了一个自定义的校验注解 `@InEnum`，用于校验枚举的有效值。
+
+#### 创建一个自定义的校验注解 `@InEnum`
+
+```java
+@Target({FIELD, CONSTRUCTOR, PARAMETER})
+@Retention(RUNTIME)
+@Documented
+@Constraint(validatedBy = InEnumValidator.class)
+public @interface InEnum {
+
+    /**
+     * Enum class
+     *
+     * @return enum class
+     */
+    Class<? extends BaseEnum> value();
+
+    String message() default "accountNo must be unique";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+```
+
+在 `@InEnum` 注解中，我们定义了一个 `value` 属性，用于指定枚举类，同时定义了 `message`、`groups` 和 `payload` 属性，用于指定错误消息、校验组和扩展信息。
+同时通过 `@Constraint(validatedBy = InEnumValidator.class)` 注解指定了校验实现类 `InEnumValidator`。
+
+#### 创建一个自定义的校验实现类 `InEnumValidator`
+
+```java
+public class InEnumValidator implements ConstraintValidator<InEnum, String> {
+
+    private Class<? extends BaseEnum> enumClass;
+
+    @Override
+    public void initialize(InEnum constraintAnnotation) {
+        enumClass = constraintAnnotation.value();
+    }
+
+    @Override
+    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+        if (enumClass == null) {
+            return false;
+        }
+
+        for (BaseEnum baseEnum : enumClass.getEnumConstants()) {
+            if (baseEnum.getCode().equals(s)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+```
+
+在 `InEnumValidator` 类中，我们实现了 `ConstraintValidator<InEnum, String>` 接口，重写了 `initialize` 和 `isValid` 方法。
+在 `initialize` 方法中，我们获取了 `@InEnum` 注解中的枚举类，用于后续校验。
+在 `isValid` 方法中，我们校验了被注解的元素是否在指定的枚举类中。
+
+#### 添加全局异常处理
+
+```java
+@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    public static final String ILLEGAL_PARAMETERS = "ILLEGAL_PARAMETERS";
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public <T> Response<T> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("MethodArgumentNotValidException occur!!!", e);
+        return Response.fail(ILLEGAL_PARAMETERS,
+                e.getBindingResult().getFieldErrors().stream()
+                        .map(FieldError::getDefaultMessage).collect(Collectors.joining("; ")));
+    }
+}
+```
+
+在 `GlobalExceptionHandler` 类中，我们使用 `@RestControllerAdvice` 注解标记为全局异常处理类，同时使用 `@ExceptionHandler` 注解标记为处理 `MethodArgumentNotValidException` 异常的方法。
+在 `handlerMethodArgumentNotValidException` 方法中，我们获取了校验失败的字段错误信息，并使用通用的 `Response` 对象封装返回给前端。
+
+#### 启动应用，测试效果
+
+测试参数校验的效果，我们可以使用 Postman 工具发送请求，我们先测试一个创建账户的接口，请求响应如下：
+
+![create account request](/images/201/test_create_account1.jpg)
+
+再测试一个参数校验通过的创建账户的接口，请求响应如下：
+
+![create account request](/images/201/test_create_account2.jpg)
+
+再测试一下更新账户的接口，请求响应如下：
+![update account request](/images/201/test_update_account1.jpg)
+
+增加 accountId 参数后，再测试一下更新账户的接口，请求响应如下：
+![update account request](/images/201/test_update_account2.jpg)
+
 ### @Validated 与 @Valid 的区别
+
+这里很容易搞混 @Valid（javax.validation） 和 @Validated （org.springframework.validation.annotation）注解。
+两者的区别在于 @Validated 有 value 属性，支持分组校验，即根据不同的分组采用不同的校验机制，比如在上面创建和更新账户的时候，可以传入不同的分组，而 @Valid 主要的功能是添加在成员变量上，支持嵌套校验。
+所以建议的使用方式就是：启动校验（即 Controller 层）时使用 @Validated 注解，嵌套校验时使用 @Valid 注解，这样就能同时使用分组校验和嵌套校验功能。
 
 ### 实现原理
 
