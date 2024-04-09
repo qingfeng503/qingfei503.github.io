@@ -8,7 +8,7 @@ export default function Home() {
   )
 
   return (
-    <div className='container max-w-[64rem] flex-col grid gap-10'>
+    <div className="container grid max-w-[64rem] flex-col gap-10">
       {posts.map((post, idx) => (
         <PostCard key={idx} {...post} />
       ))}
