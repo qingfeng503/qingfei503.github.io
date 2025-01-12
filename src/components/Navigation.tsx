@@ -116,7 +116,7 @@ export function Navigation() {
                   key={post._id}
                   className="block w-full rounded-lg p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={() => {
-                    router.push(post.url)
+                    router.push(post.url as `/posts/${string}/${string}`)
                     setIsSearchOpen(false)
                   }}
                 >

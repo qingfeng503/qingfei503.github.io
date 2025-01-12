@@ -5,12 +5,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const components = {
-  Image: (props: any) => (
+  Image: ({ alt = '', src, ...props }: { alt?: string; src: string; [key: string]: any }) => (
     <Image
+      alt={alt}
+      src={src}
       {...props}
       loading="lazy"
       className="rounded-lg"
       sizes="(min-width: 1024px) 64rem, 100vw"
+      width={1200}
+      height={630}
     />
   ),
   a: ({ href, children }: { href: string; children: React.ReactNode }) => {
