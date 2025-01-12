@@ -1,10 +1,12 @@
 import { ThemeProvider } from '@/app/providers'
 import { Container } from '@/components/Container'
 import { Navigation } from '@/components/Navigation'
-import ThemeSwitch from '@/components/ThemeSwitch'
+import { ThemeSwitch } from '@/components/ThemeSwitch'
 import { WEBSITE_HOST_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import './global.css'
 
 const meta = {
@@ -94,7 +96,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
         <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
@@ -117,22 +119,30 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed.xml" />
       </head>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <header className="py-4">
-            <Container>
-              <div className="container max-w-[64rem] flex items-center justify-between">
-                <Navigation />
-                <ThemeSwitch />
-              </div>
-            </Container>
-          </header>
-          <main className='border-t border-gray-200 pt-4 dark:border-gray-700'>
-            <Container>{children}</Container>
-          </main>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="relative min-h-screen">
+            <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/75 backdrop-blur dark:border-gray-700 dark:bg-gray-900/75">
+              <Container>
+                <div className="flex h-16 items-center justify-between">
+                  <Navigation />
+                  <ThemeSwitch />
+                </div>
+              </Container>
+            </header>
+            <main className="py-8">
+              <Container>
+                <ErrorBoundary>
+                  {children}
+                </ErrorBoundary>
+              </Container>
+            </main>
+          </div>
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

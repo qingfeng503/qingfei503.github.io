@@ -1,16 +1,15 @@
 "use client"
 
 import { useMDXComponent } from 'next-contentlayer/hooks'
-import Image from 'next/image'
 import Link from 'next/link'
+import { BlurImage } from './BlurImage'
 
 const components = {
   Image: ({ alt = '', src, ...props }: { alt?: string; src: string; [key: string]: any }) => (
-    <Image
+    <BlurImage
       alt={alt}
       src={src}
       {...props}
-      loading="lazy"
       className="rounded-lg"
       sizes="(min-width: 1024px) 64rem, 100vw"
       width={1200}
