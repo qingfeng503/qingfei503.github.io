@@ -1,78 +1,90 @@
-import { WEBSITE_HOST_URL } from '@/lib/constants'
-import { allPosts } from 'contentlayer/generated'
-import { format, parseISO } from 'date-fns'
-import type { MDXComponents } from 'mdx/types'
-import type { Metadata } from 'next'
-import { useMDXComponent } from 'next-contentlayer/hooks'
-import NextImage from 'next/image'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { allPosts } from 'contentlayer/generated'
+import { Mdx } from '@/components/Mdx'
+import { format, parseISO } from 'date-fns'
+import { calculateReadingTime } from '@/lib/utils'
+import { TableOfContents } from '@/components/TableOfContents'
+import { ReadingProgress } from '@/components/ReadingProgress'
 
-export async function generateStaticParams() {
+interface PostProps {
+  params: {
+    slug: string[]
+  }
+}
+
+async function getPost(params: PostProps['params']) {
+  const slug = params?.slug?.join('/')
+  const post = allPosts.find((post) => {
+    const postPath = `${post.category}/${post.slug}`
+    return postPath === slug
+  })
+
+  if (!post) {
+    return null
+  }
+
+  return post
+}
+
+export async function generateMetadata({ params }: PostProps) {
+  const post = await getPost(params)
+
+  if (!post) {
+    return {}
+  }
+
+  return {
+    title: post.title,
+    description: post.description,
+  }
+}
+
+export async function generateStaticParams(): Promise<PostProps['params'][]> {
   return allPosts.map((post) => ({
-    slug: [post.category, ...post.slug.split('/')]
+    slug: [post.category, post.slug],
   }))
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string[] }
-}): Promise<Metadata | undefined> {
-  const post = allPosts.find((post) => post.url === '/posts/' + params.slug.join('/'))
+function PostContent({ post }: { post: any }) {
+  const readingTime = calculateReadingTime(post.body.raw)
 
-  if (!post) {
-    return
-  }
-
-  const { title, description, date, url } = post
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: 'article',
-      publishedTime: date,
-      url: `${WEBSITE_HOST_URL}/posts/${url}`,
-    },
-    twitter: {
-      title,
-      description,
-    },
-    alternates: {
-      canonical: `${WEBSITE_HOST_URL}/posts/${url}`,
-    },
-  }
+  return (
+    <article className="prose mx-auto w-full max-w-none dark:prose-invert">
+      <h1 className="mb-2">{post.title}</h1>
+      <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+        <time dateTime={post.date}>
+          {format(parseISO(post.date), 'yyyy年MM月dd日')}
+        </time>
+        <span>·</span>
+        <span>{readingTime} 分钟阅读</span>
+        {post.category && (
+          <>
+            <span>·</span>
+            <span>{post.category}</span>
+          </>
+        )}
+      </div>
+      <Mdx code={post.body.code} />
+    </article>
+  )
 }
 
-// Define your custom MDX components.
-const mdxComponents: MDXComponents = {
-  a: ({ href, children }) => <Link href={href as string}>{children}</Link>,
-  Image: (props) => <NextImage className="rounded-lg" {...props} />,
-}
-
-const PostLayout = ({ params }: { params: { slug: string[] } }) => {
-  const post = allPosts.find((post) => post.url === '/posts/' + params.slug.join('/'))
+export default async function PostPage({ params }: PostProps) {
+  const post = await getPost(params)
 
   if (!post) {
     notFound()
   }
 
-  const MDXContent = useMDXComponent(post.body.code)
-
   return (
-    <div>
-      <h1>{post.title}</h1>
-      <time className="my-4 block text-sm text-zinc-400" dateTime={post.date}>
-        {format(parseISO(post.date), 'LLLL d, yyyy')}
-      </time>
-      <article className="prose dark:prose-invert">
-        <MDXContent components={mdxComponents} />
-      </article>
+    <div className="relative mx-auto max-w-[64rem]">
+      <ReadingProgress />
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_250px]">
+        <PostContent post={post} />
+        <aside className="hidden lg:block">
+          <TableOfContents />
+        </aside>
+      </div>
     </div>
   )
 }
-
-export default PostLayout
