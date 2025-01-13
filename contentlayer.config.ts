@@ -3,6 +3,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
+import { getHighlighter } from 'shiki'
 
 const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -38,6 +39,7 @@ const Post = defineDocumentType(() => ({
       type: 'string',
       description: 'The cover image of the post',
       required: false,
+      default: '/covers/default.jpeg',
     },
     slug: {
       type: 'string',
@@ -63,27 +65,18 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          theme: 'one-dark-pro',
-          onVisitLine(node) {
-            // Prevent lines from collapsing in `display: grid` mode, and allow empty
-            // lines to be copy/pasted
-            if (node.children.length === 0) {
-              node.children = [{ type: 'text', value: ' ' }]
-            }
-          },
-          onVisitHighlightedLine(node) {
-            node.properties.className.push('line--highlighted')
-          },
-          onVisitHighlightedWord(node) {
-            node.properties.className = ['word--highlighted']
-          },
+          getHighlighter: () =>
+            getHighlighter({
+              theme: 'github-dark',
+            }),
         },
       ],
       [
         rehypeAutolinkHeadings,
         {
           properties: {
-            className: ['anchor'],
+            className: ['subheading-anchor'],
+            ariaLabel: 'Link to section',
           },
         },
       ],

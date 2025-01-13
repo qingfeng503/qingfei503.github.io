@@ -20,31 +20,30 @@ export function BlurImage({
   alt,
   width,
   height,
-  fill = false,
+  fill,
   sizes,
-  priority = false,
+  priority,
   className,
 }: BlurImageProps) {
   const [isLoading, setLoading] = useState(true)
 
   return (
-    <div className={cn('overflow-hidden', className)}>
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        fill={fill}
-        sizes={sizes}
-        priority={priority}
-        className={cn(
-          'duration-700 ease-in-out',
-          isLoading
-            ? 'scale-110 blur-2xl grayscale'
-            : 'scale-100 blur-0 grayscale-0'
-        )}
-        onLoadingComplete={() => setLoading(false)}
-      />
-    </div>
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      fill={fill}
+      sizes={sizes}
+      priority={priority}
+      className={cn(
+        'duration-700 ease-in-out',
+        isLoading
+          ? 'scale-110 blur-2xl grayscale'
+          : 'scale-100 blur-0 grayscale-0',
+        className
+      )}
+      onLoad={() => setLoading(false)}
+    />
   )
 } 
