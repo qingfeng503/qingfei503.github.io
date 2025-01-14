@@ -128,7 +128,6 @@ export default function RootLayout({
               <Container>
                 <div className="flex h-16 items-center justify-between">
                   <Navigation />
-                  <ThemeSwitch />
                 </div>
               </Container>
             </header>

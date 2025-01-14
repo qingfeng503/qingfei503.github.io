@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BlurImage } from './BlurImage'
 import { calculateReadingTime } from '@/lib/utils'
+import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 
 interface FeaturedPostProps {
   post: Post
@@ -24,9 +25,12 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
         <div className="relative grid gap-8 p-8 md:grid-cols-2 md:gap-12 md:p-12">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/70 dark:text-blue-200">
-                {post.category}
-              </span>
+              <Link 
+                href={`/categories/${post.category}`}
+                className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 hover:bg-blue-200 dark:bg-blue-900/70 dark:text-blue-200 dark:hover:bg-blue-900"
+              >
+                {getCategoryName(post.category as keyof typeof CATEGORY_MAP)}
+              </Link>
               <h2 className="text-2xl font-bold text-gray-900 transition-colors group-hover:text-blue-500 dark:text-gray-100 dark:group-hover:text-blue-400 md:text-3xl">
                 {post.title}
               </h2>

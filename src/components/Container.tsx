@@ -1,14 +1,30 @@
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
+
+interface ContainerProps {
+  children: React.ReactNode
+  className?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+}
+
+const containerSize = {
+  sm: 'max-w-3xl',
+  md: 'max-w-4xl',
+  lg: 'max-w-5xl',
+  xl: 'max-w-6xl',
+  full: 'max-w-[1920px]'
+}
 
 export function Container({
   children,
   className,
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
+  size = 'xl'
+}: ContainerProps) {
   return (
-    <div className={clsx(className, 'mx-auto max-w-2xl px-6 lg:max-w-4xl')}>
+    <div className={cn(
+      'mx-auto w-full px-4 sm:px-6 lg:px-8',
+      containerSize[size],
+      className
+    )}>
       {children}
     </div>
   )

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Search } from './Search'
+import { ThemeSwitch } from './ThemeSwitch'
 
 const links = [
   { href: '/' as const, label: '首页' },
@@ -31,8 +32,9 @@ export function Navigation() {
           </Link>
         ))}
       </div>
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center gap-4">
         <Search />
+        <ThemeSwitch />
       </div>
     </nav>
   )

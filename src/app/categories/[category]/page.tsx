@@ -3,6 +3,7 @@ import { compareDesc } from 'date-fns'
 import { CATEGORY_MAP } from '@/lib/images'
 import { notFound } from 'next/navigation'
 import { CategoryPageContent } from '@/components/CategoryPageContent'
+import { Container } from '@/components/Container'
 
 const POSTS_PER_PAGE = 10
 
@@ -35,14 +36,16 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
   )
 
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-16">
-      <CategoryPageContent
-        category={params.category}
-        posts={paginatedPosts}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
-    </div>
+    <Container>
+      <div className="py-12 sm:py-16">
+        <CategoryPageContent
+          category={params.category}
+          posts={paginatedPosts}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
+      </div>
+    </Container>
   )
 }
 
