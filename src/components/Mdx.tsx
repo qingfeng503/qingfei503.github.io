@@ -16,6 +16,24 @@ const components = {
       height={630}
     />
   ),
+  h1: ({ children }: { children: React.ReactNode }) => (
+    <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{children}</h1>
+  ),
+  h2: ({ children, id }: { children: React.ReactNode; id?: string }) => (
+    <h2 id={id} className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+      {children}
+    </h2>
+  ),
+  h3: ({ children, id }: { children: React.ReactNode; id?: string }) => (
+    <h3 id={id} className="scroll-m-20 text-2xl font-semibold tracking-tight">
+      {children}
+    </h3>
+  ),
+  h4: ({ children, id }: { children: React.ReactNode; id?: string }) => (
+    <h4 id={id} className="scroll-m-20 text-xl font-semibold tracking-tight">
+      {children}
+    </h4>
+  ),
   a: ({ href, children }: { href: string; children: React.ReactNode }) => {
     if (href.startsWith('/')) {
       return (

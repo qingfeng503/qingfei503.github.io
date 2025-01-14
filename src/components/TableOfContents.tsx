@@ -14,7 +14,10 @@ export function TableOfContents() {
   const [activeId, setActiveId] = useState<string>('')
 
   useEffect(() => {
-    const elements = Array.from(document.querySelectorAll('h2, h3, h4'))
+    const article = document.querySelector('article')
+    if (!article) return
+
+    const elements = Array.from(article.querySelectorAll('h2, h3, h4'))
     const headingElements = elements.map((element) => ({
       id: element.id,
       text: element.textContent || '',
