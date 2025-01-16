@@ -1,7 +1,7 @@
 "use client"
 
 import { ThemeProvider } from '@/app/providers'
-import { Navigation } from '@/components/Navigation'
+import { Navigation } from '@/components/navigation/Navigation'
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ErrorBoundary } from '@/components/ErrorBoundary'

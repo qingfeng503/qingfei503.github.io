@@ -53,7 +53,7 @@ export function SearchDialog({ isOpen, onClose, onOpen }: SearchDialogProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100]">
+    <div className="fixed inset-0 z-[999]">
       {/* 遮罩层 */}
       <div 
         className="fixed inset-0 bg-black/50 backdrop-blur-sm"
