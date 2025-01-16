@@ -2,7 +2,6 @@
 export const CATEGORY_MAP = {
   dev: '编程技术',
   ai: '人工智能',
-  product: '产品设计',
   build: '构建之路',
   reading: '阅读记录',
   thoughts: '随想思考',
@@ -12,7 +11,6 @@ export const CATEGORY_MAP = {
 export const DEFAULT_COVERS = {
   dev: '/images/covers/dev.jpg',
   ai: '/images/covers/ai.jpg',
-  product: '/images/covers/product.jpg',
   build: '/images/covers/build.jpg',
   reading: '/images/covers/reading.jpg',
   thoughts: '/images/covers/thoughts.jpg',

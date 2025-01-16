@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils'
 import { ThemeSwitch } from './ThemeSwitch'
 import Image from 'next/image'
 import { allPosts } from 'contentlayer/generated'
-import { useRouter } from 'next/navigation'
 import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 import { useState, useEffect } from 'react'
+import { AppRoute, CategoryRoute, ExternalRoute, PostRoute, createCategoryRoute, isExternalRoute } from '@/lib/routes'
+import { Route } from 'next'
 import { 
   FaGithub, 
   FaTwitter, 
@@ -19,7 +20,6 @@ import {
   FaBrain,
   FaRobot,
   FaLaptopCode,
-  FaPencilRuler,
   FaRocket,
   FaBook,
   FaLightbulb,
@@ -36,32 +36,30 @@ const getCategoryCount = (category: string) => {
 
 const navigation = {
   main: [
-    { href: '/' as const, label: '首页', icon: FaHome },
-    { href: '/about' as const, label: '关于我', icon: FaUser },
+    { href: '/' as Route<'/'>, label: '首页', icon: FaHome },
+    { href: '/about' as Route<'/about'>, label: '关于我', icon: FaUser },
   ],
   posts: [
-    { href: '/categories/dev' as const, label: '编程开发', icon: FaLaptopCode, count: getCategoryCount('dev') },
-    { href: '/categories/ai' as const, label: '人工智能', icon: FaBrain, count: getCategoryCount('ai') },
-    { href: '/categories/product' as const, label: '产品设计', icon: FaPencilRuler, count: getCategoryCount('product') },
-    { href: '/categories/build' as const, label: '构建之路', icon: FaRocket, count: getCategoryCount('build') },
-    { href: '/categories/reading' as const, label: '阅读记录', icon: FaBook, count: getCategoryCount('reading') },
-    { href: '/categories/thoughts' as const, label: '思考随笔', icon: FaLightbulb, count: getCategoryCount('thoughts') },
+    { href: createCategoryRoute('dev'), label: '编程开发', icon: FaLaptopCode, count: getCategoryCount('dev') },
+    { href: createCategoryRoute('ai'), label: '人工智能', icon: FaBrain, count: getCategoryCount('ai') },
+    { href: createCategoryRoute('build'), label: '构建之路', icon: FaRocket, count: getCategoryCount('build') },
+    { href: createCategoryRoute('reading'), label: '阅读记录', icon: FaBook, count: getCategoryCount('reading') },
+    { href: createCategoryRoute('thoughts'), label: '思考随笔', icon: FaLightbulb, count: getCategoryCount('thoughts') },
   ],
   projects: [
-    { href: 'https://bestblogs.dev', label: 'BestBlogs.dev', icon: FaCode },
-    { href: 'https://bitflowing.net', label: 'BitFlowing',  icon: FaBrain },
-    { href: 'https://hiagent.io', label: 'HiAgent', icon: FaRobot },
-    { href: 'https://tiky.ai', label: 'Tiky AI', icon: FaRobot },
+    { href: 'https://bestblogs.dev' as ExternalRoute, label: 'BestBlogs.dev', icon: FaCode },
+    { href: 'https://bitflowing.net' as ExternalRoute, label: 'BitFlowing',  icon: FaBrain },
+    { href: 'https://hiagent.io' as ExternalRoute, label: 'HiAgent', icon: FaRobot },
+    { href: 'https://tiky.ai' as ExternalRoute, label: 'Tiky AI', icon: FaRobot },
   ],
   online: [
-    { href: 'https://github.com/ginobefun', label: 'GitHub', icon: FaGithub },
-    { href: 'https://twitter.com/hongming731', label: 'Twitter', icon: FaTwitter },
+    { href: 'https://github.com/ginobefun' as ExternalRoute, label: 'GitHub', icon: FaGithub },
+    { href: 'https://twitter.com/hongming731' as ExternalRoute, label: 'Twitter', icon: FaTwitter },
   ]
 }
 
 export function Navigation() {
   const pathname = usePathname()
-  const router = useRouter()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -92,17 +90,13 @@ export function Navigation() {
 
     useEffect(() => {
       if (query && query.trim().length > 1) {
-        const searchResults = allPosts
-          .filter(post => 
-            post.title.toLowerCase().includes(query.trim().toLowerCase()) ||
-            post.body.raw.toLowerCase().includes(query.trim().toLowerCase())
-          )
-          .map(post => ({
-            ...post,
-            url: post.url.startsWith('/') ? post.url : `/${post.url}`
-          }))
+        const results = allPosts
+          .filter((post) => {
+            const searchContent = post.title + post.description + post.category
+            return searchContent.toLowerCase().includes(query.toLowerCase())
+          })
           .slice(0, 5)
-        setResults(searchResults)
+        setResults(results)
       } else {
         setResults([])
       }
@@ -111,119 +105,39 @@ export function Navigation() {
     if (!isSearchOpen) return null
 
     return (
-      <div 
-        className={cn(
-          "fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20 backdrop-blur-sm",
-          mounted ? "animate-in fade-in duration-200" : "opacity-0"
-        )}
-        onClick={() => setIsSearchOpen(false)}
-      >
-        <div 
-          className={cn(
-            "bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-xl mx-4",
-            "transform transition-all duration-200",
-            mounted ? "scale-100 translate-y-0" : "scale-95 -translate-y-4"
-          )}
-          onClick={e => e.stopPropagation()}
-        >
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-2">
-              <FaSearch className="w-4 h-4 text-gray-500 animate-pulse" />
-              <input
-                type="text"
-                placeholder="搜索文章..."
-                className="flex-1 bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                autoFocus
-              />
-              <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
-                ESC
-              </kbd>
-            </div>
-          </div>
-          {results.length > 0 && (
-            <ul className="py-2 max-h-[32rem] overflow-y-auto">
-              {results.map((post, index) => {
-                // 处理 URL 路径
-                const postUrl = post.url.startsWith('/') ? post.url : `/${post.url}`
-                
-                return (
-                  <li 
-                    key={post._id}
-                    className={cn(
-                      "transform transition-all duration-200 border-b last:border-b-0 border-gray-100 dark:border-gray-800",
-                      mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
-                      `transition-delay-[${index * 50}ms]`
-                    )}
-                  >
-                    <a
-                      href={postUrl}
-                      className="block w-full px-6 py-4 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors group"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setIsSearchOpen(false)
-                        router.push(postUrl)
-                      }}
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="flex-1">
-                          <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                            {post.title}
-                          </h3>
-                          <div className="flex items-center gap-2 mt-1 text-xs text-gray-500 dark:text-gray-400">
-                            <span className="flex items-center gap-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-blue-500/60 dark:bg-blue-400/60" />
-                              {getCategoryName(post.category as keyof typeof CATEGORY_MAP)}
-                            </span>
-                            <span>·</span>
-                            <time dateTime={post.date} className="tabular-nums">
-                              {format(parseISO(post.date), 'yyyy年MM月dd日')}
-                            </time>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 leading-relaxed">
-                        {post.description || post.body.raw.slice(0, 200)}
-                      </div>
-                      <div className="mt-3 flex items-center text-xs text-blue-500 dark:text-blue-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span>阅读全文</span>
-                        <svg 
-                          className="w-4 h-4 ml-1 transform transition-transform group-hover:translate-x-0.5" 
-                          viewBox="0 0 20 20" 
-                          fill="currentColor"
-                        >
-                          <path 
-                            fillRule="evenodd" 
-                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" 
-                            clipRule="evenodd" 
-                          />
-                        </svg>
-                      </div>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          )}
-          {query.length > 1 && results.length === 0 && (
-            <div className={cn(
-              "p-8 text-sm text-gray-500 text-center",
-              mounted ? "animate-in fade-in-50 duration-200" : "opacity-0"
-            )}>
-              <FaSearch className="w-5 h-5 mx-auto mb-3 opacity-50" />
-              未找到相关文章
-            </div>
-          )}
-        </div>
+      <div className="relative mt-2">
+        <ul className="max-h-[300px] space-y-2 overflow-auto rounded-xl bg-white/90 p-2 shadow-lg backdrop-blur dark:bg-zinc-800/90">
+          {results.map((post) => (
+            <li key={post.url} className="group">
+              <Link
+                href={post.url as PostRoute}
+                onClick={() => setIsSearchOpen(false)}
+                className="block space-y-1 rounded-lg p-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-700/50"
+              >
+                <div className="space-y-1">
+                  <h3 className="text-base font-medium text-zinc-900 dark:text-zinc-100">
+                    {post.title}
+                  </h3>
+                  <p className="line-clamp-2 text-sm text-zinc-600 dark:text-zinc-400">
+                    {post.description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-zinc-500">
+                  <span>{post.category}</span>
+                  <span>{post.date}</span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     )
   }
 
-  const NavItem = ({ item }: { item: any }) => {
-    const { href, label, icon: Icon, description, count } = item
+  const NavItem = ({ item }: { item: { href: AppRoute; label: string; icon: any; count?: number } }) => {
+    const { href, label, icon: Icon, count } = item
     const isActive = pathname === href
-    const isExternal = href.startsWith('http')
+    const isExternal = isExternalRoute(href)
 
     const className = cn(
       'flex flex-1 items-center space-x-3 rounded-md px-2 py-1.5 text-sm font-medium',
@@ -242,9 +156,6 @@ export function Navigation() {
           <span className="text-xs text-gray-500 dark:text-gray-400 tabular-nums">
             {count}
           </span>
-        )}
-        {description && (
-          <span className="text-xs text-gray-500">{description}</span>
         )}
         {isExternal && (
           <span className="flex items-center justify-center w-4 text-black text-opacity-40 dark:text-white">
@@ -378,7 +289,7 @@ export function Navigation() {
                   </a>
                 </div>
                 <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-medium italic">
-                  "Just be funny."
+                  Just be funny.
                 </p>
               </div>
             </div>

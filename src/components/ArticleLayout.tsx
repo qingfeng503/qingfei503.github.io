@@ -7,6 +7,7 @@ import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { cn } from '@/lib/utils'
 import { TableOfContents } from './TableOfContents'
+import { PostRoute, TagRoute, createTagRoute } from '@/lib/routes'
 
 interface ArticleLayoutProps {
   post: Post
@@ -16,6 +17,9 @@ interface ArticleLayoutProps {
 
 export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) {
   const MDXContent = useMDXComponent(post.body.code)
+
+  // 处理标签
+  const tags = post.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || []
 
   return (
     <article className="min-h-screen w-full">
@@ -68,12 +72,12 @@ export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) 
           {/* 文章页脚 */}
           <footer className="mt-12 md:mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
             {/* 文章标签 */}
-            {post.tags && post.tags.length > 0 && (
+            {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-8">
-                {post.tags.map(tag => (
+                {tags.map(tag => (
                   <Link
                     key={tag}
-                    href={`/tags/${tag}`}
+                    href={createTagRoute(tag)}
                     className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-700 dark:text-blue-300 
                       bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-md
                       hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
@@ -88,7 +92,7 @@ export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) 
             <nav className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {prevPost && (
                 <Link
-                  href={prevPost.url}
+                  href={prevPost.url as PostRoute}
                   className="group p-4 border border-gray-200 dark:border-gray-800 rounded-lg
                     hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
                 >
@@ -100,7 +104,7 @@ export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) 
               )}
               {nextPost && (
                 <Link
-                  href={nextPost.url}
+                  href={nextPost.url as PostRoute}
                   className="group p-4 border border-gray-200 dark:border-gray-800 rounded-lg
                     hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors
                     md:text-right"
