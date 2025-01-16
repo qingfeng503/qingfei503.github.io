@@ -24,7 +24,9 @@ import {
   FaBook,
   FaLightbulb,
   FaSearch,
-  FaEnvelope
+  FaEnvelope,
+  FaBars,
+  FaTimes
 } from 'react-icons/fa'
 
 // 获取每个分类的文章数量
@@ -61,22 +63,21 @@ export function Navigation() {
   const pathname = usePathname()
   const router = useRouter()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  // 监听快捷键
+  // 监听移动端返回按钮
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        setIsSearchOpen(true)
-      }
-      if (e.key === 'Escape') {
-        setIsSearchOpen(false)
-      }
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
     }
+  }, [isMobileMenuOpen])
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  // 监听路由变化，关闭移动端菜单
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [pathname])
 
   // 搜索框组件
   const SearchDialog = () => {
@@ -290,13 +291,68 @@ export function Navigation() {
     </div>
   )
 
+  // 移动端顶部栏组件
+  const MobileHeader = () => (
+    <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 z-30">
+      <div className="flex items-center justify-between px-4 h-full">
+        <button
+          className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+          onClick={() => setIsMobileMenuOpen(true)}
+        >
+          <FaBars className="w-5 h-5" />
+        </button>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/avatar.jpg"
+            alt="Gino"
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
+          <span className="font-medium text-gray-900 dark:text-gray-100">
+            Gino
+          </span>
+        </div>
+        <button
+          className="p-2 -mr-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+          onClick={() => setIsSearchOpen(true)}
+        >
+          <FaSearch className="w-5 h-5" />
+        </button>
+      </div>
+    </header>
+  )
+
   return (
     <>
       <SearchDialog />
-      <nav className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 py-8 px-4 overflow-y-auto">
+      <MobileHeader />
+      
+      {/* 移动端菜单遮罩 */}
+      {isMobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* 导航菜单 */}
+      <nav className={cn(
+        "fixed top-0 left-0 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 py-8 px-4 overflow-y-auto transition-all duration-300 z-50",
+        "lg:w-64 lg:translate-x-0",
+        isMobileMenuOpen ? "w-[280px] translate-x-0" : "w-[280px] -translate-x-full",
+      )}>
         <div className="flex flex-col h-full">
+          {/* 移动端关闭按钮 */}
+          <button
+            className="lg:hidden absolute top-4 right-4 p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FaTimes className="w-5 h-5" />
+          </button>
+
           {/* 头像和个人信息 */}
-          <div className="px-3 mb-8">
+          <div className="px-3 mb-8 mt-4 lg:mt-0">
             <div className="relative group">
               <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-gray-200 dark:ring-gray-700">
                 <Image
@@ -322,7 +378,7 @@ export function Navigation() {
                   </a>
                 </div>
                 <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-medium italic">
-                  Just be funny.
+                  "Just be funny."
                 </p>
               </div>
             </div>
@@ -348,7 +404,7 @@ export function Navigation() {
             <div className="flex items-center justify-between">
               <ThemeSwitch />
               <button
-                className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
                 onClick={() => setIsSearchOpen(true)}
               >
                 <FaSearch className="w-4 h-4" />
@@ -358,6 +414,9 @@ export function Navigation() {
           </div>
         </div>
       </nav>
+
+      {/* 移动端内容区域 padding */}
+      <div className="lg:hidden h-16" />
     </>
   )
 }

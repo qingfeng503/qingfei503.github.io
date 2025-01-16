@@ -8,7 +8,6 @@ import { Container } from '@/components/Container'
 import { calculateReadingTime } from '@/lib/readingTime'
 import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 import Link from 'next/link'
-import '@/styles/article.css'
 
 interface PostProps {
   params: {

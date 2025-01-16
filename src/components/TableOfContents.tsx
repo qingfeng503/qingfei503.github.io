@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 interface Heading {
   id: string
@@ -10,20 +11,15 @@ interface Heading {
 
 export function TableOfContents() {
   const [headings, setHeadings] = useState<Heading[]>([])
-  const [activeId, setActiveId] = useState('')
+  const [activeId, setActiveId] = useState<string>('')
 
   useEffect(() => {
-    const article = document.querySelector('.article-content')
-    if (!article) return
-
-    const elements = Array.from(article.querySelectorAll('h2, h3'))
-    const headingItems = elements.map((element) => ({
-      id: element.id,
-      text: element.textContent || '',
-      level: Number(element.tagName.charAt(1))
+    const articleHeadings = Array.from(document.querySelectorAll('h2, h3')).map(heading => ({
+      id: heading.id,
+      text: heading.textContent || '',
+      level: Number(heading.tagName[1])
     }))
-
-    setHeadings(headingItems)
+    setHeadings(articleHeadings)
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -33,10 +29,18 @@ export function TableOfContents() {
           }
         })
       },
-      { rootMargin: '-20% 0% -35% 0%' }
+      {
+        rootMargin: '-20% 0% -35% 0%',
+        threshold: 1.0
+      }
     )
 
-    elements.forEach((element) => observer.observe(element))
+    articleHeadings.forEach(heading => {
+      const element = document.getElementById(heading.id)
+      if (element) {
+        observer.observe(element)
+      }
+    })
 
     return () => observer.disconnect()
   }, [])
@@ -44,22 +48,34 @@ export function TableOfContents() {
   if (headings.length === 0) return null
 
   return (
-    <nav className="table-of-contents">
-      <h2 className="toc-title">目录</h2>
-      <ul className="toc-list">
-        {headings.map((heading) => (
-          <li
+    <nav className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+        目录
+      </h2>
+      <ul className="space-y-2.5">
+        {headings.map(heading => (
+          <li 
             key={heading.id}
-            className={`toc-item ${heading.level === 3 ? 'ml-4' : ''} ${
-              activeId === heading.id ? 'active' : ''
-            }`}
+            className={cn(
+              heading.level === 2 ? 'ml-0' : 'ml-4',
+            )}
           >
             <a
               href={`#${heading.id}`}
+              className={cn(
+                'block text-sm transition-colors duration-200',
+                heading.level === 2 
+                  ? 'font-medium' 
+                  : 'font-normal',
+                activeId === heading.id
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'
+              )}
               onClick={(e) => {
                 e.preventDefault()
-                document.querySelector(`#${heading.id}`)?.scrollIntoView({
-                  behavior: 'smooth'
+                document.getElementById(heading.id)?.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
                 })
               }}
             >
