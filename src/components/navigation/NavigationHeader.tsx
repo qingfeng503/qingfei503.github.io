@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { FaBars, FaSearch } from 'react-icons/fa'
-import { ThemeSwitch } from '../ThemeSwitch'
+import { ThemeSwitch } from '../common/ThemeSwitch'
 
 interface NavigationHeaderProps {
   onMenuClick: () => void

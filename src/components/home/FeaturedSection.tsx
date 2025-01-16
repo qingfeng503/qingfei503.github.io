@@ -1,6 +1,6 @@
 import { Post } from 'contentlayer/generated'
-import { Container } from '../Container'
-import { FeaturedPost } from '../FeaturedPost'
+import { Container } from '@/components/common/Container'
+import { FeaturedPost } from '@/components/home/FeaturedPost'
 
 interface FeaturedSectionProps {
   post: Post

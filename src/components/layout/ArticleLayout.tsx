@@ -6,7 +6,7 @@ import { Post } from 'contentlayer/generated'
 import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { cn } from '@/lib/utils'
-import { TableOfContents } from './TableOfContents'
+import { TableOfContents } from '@/components/post/TableOfContents'
 import { PostRoute, TagRoute, createTagRoute } from '@/lib/routes'
 
 interface ArticleLayoutProps {

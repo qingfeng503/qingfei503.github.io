@@ -1,5 +1,5 @@
 import { FaSearch } from 'react-icons/fa'
-import { ThemeSwitch } from '../ThemeSwitch'
+import { ThemeSwitch } from '../common/ThemeSwitch'
 
 interface NavigationFooterProps {
   onSearchClick: () => void

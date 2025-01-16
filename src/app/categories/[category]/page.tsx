@@ -2,8 +2,8 @@ import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
 import { CATEGORY_MAP } from '@/lib/images'
 import { notFound } from 'next/navigation'
-import { CategoryPageContent } from '@/components/CategoryPageContent'
-import { Container } from '@/components/Container'
+import { CategoryPageContent } from '@/components/category/CategoryPageContent'
+import { Container } from '@/components/common/Container'
 
 const POSTS_PER_PAGE = 10
 

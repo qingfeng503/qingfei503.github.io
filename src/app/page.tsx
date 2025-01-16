@@ -1,6 +1,6 @@
 import { allPosts } from 'contentlayer/generated'
-import { Hero } from '@/components/Hero'
-import { GradientBackground } from '@/components/GradientBackground'
+import { GradientBackground } from '@/components/common/GradientBackground'
+import { Hero } from '@/components/home/Hero'
 import { FeaturedSection } from '@/components/home/FeaturedSection'
 import { PostList } from '@/components/home/PostList'
 import { getFeaturedPost, getRecentPosts } from '@/lib/posts'

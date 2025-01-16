@@ -4,7 +4,7 @@ import { Post } from 'contentlayer/generated'
 import { format, parseISO } from 'date-fns'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { BlurImage } from './BlurImage'
+import { BlurImage } from '@/components/common/BlurImage'
 import { calculateReadingTime } from '@/lib/utils'
 import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 

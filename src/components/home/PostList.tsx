@@ -1,6 +1,6 @@
 import { Post } from 'contentlayer/generated'
-import { Container } from '../Container'
-import { PostCard } from '../PostCard'
+import { Container } from '@/components/common/Container'
+import { PostCard } from '@/components/common/PostCard'
 
 interface PostListProps {
   posts: Post[]
