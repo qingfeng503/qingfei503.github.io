@@ -124,20 +124,14 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="relative min-h-screen">
-            <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/75 backdrop-blur dark:border-gray-700 dark:bg-gray-900/75">
-              <Container>
-                <div className="flex h-16 items-center justify-between">
-                  <Navigation />
-                </div>
-              </Container>
-            </header>
-            <main className="py-8">
-              <Container>
+            <Navigation />
+            <div className="ml-64">
+              <main className="py-8 px-6">
                 <ErrorBoundary>
                   {children}
                 </ErrorBoundary>
-              </Container>
-            </main>
+              </main>
+            </div>
           </div>
         </ThemeProvider>
         <Analytics />
