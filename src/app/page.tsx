@@ -17,11 +17,11 @@ export default function Home() {
       <Hero />
 
       {/* 主要内容区域 */}
-      <div className="relative space-y-16 py-12 sm:space-y-20 sm:py-16 md:space-y-28 md:py-24">
+      <div className="relative space-y-12 py-8 sm:space-y-16 sm:py-12">
         {/* 特色文章 */}
         {featuredPost && <FeaturedSection post={featuredPost} />}
 
-        {/* 最近文章列表 */}
+        {/* 最新文章列表 */}
         <PostList posts={recentPosts} />
       </div>
     </>
