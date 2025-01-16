@@ -1,9 +1,8 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 
-type Heading = {
+interface Heading {
   id: string
   text: string
   level: number
@@ -11,19 +10,20 @@ type Heading = {
 
 export function TableOfContents() {
   const [headings, setHeadings] = useState<Heading[]>([])
-  const [activeId, setActiveId] = useState<string>('')
+  const [activeId, setActiveId] = useState('')
 
   useEffect(() => {
-    const article = document.querySelector('article')
+    const article = document.querySelector('.article-content')
     if (!article) return
 
-    const elements = Array.from(article.querySelectorAll('h2, h3, h4'))
-    const headingElements = elements.map((element) => ({
+    const elements = Array.from(article.querySelectorAll('h2, h3'))
+    const headingItems = elements.map((element) => ({
       id: element.id,
       text: element.textContent || '',
-      level: Number(element.tagName.charAt(1)),
+      level: Number(element.tagName.charAt(1))
     }))
-    setHeadings(headingElements)
+
+    setHeadings(headingItems)
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -33,7 +33,7 @@ export function TableOfContents() {
           }
         })
       },
-      { rootMargin: '0px 0px -80% 0px' }
+      { rootMargin: '-20% 0% -35% 0%' }
     )
 
     elements.forEach((element) => observer.observe(element))
@@ -41,41 +41,33 @@ export function TableOfContents() {
     return () => observer.disconnect()
   }, [])
 
+  if (headings.length === 0) return null
+
   return (
-    <nav className="sticky top-4 max-h-[calc(100vh-4rem)] w-full overflow-auto rounded-lg bg-gray-50/50 p-4 backdrop-blur-sm dark:bg-gray-900/50 lg:p-6">
-      <h2 className="mb-4 text-base font-semibold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent lg:text-lg">目录</h2>
-      <motion.ul 
-        className="space-y-1.5 text-xs lg:space-y-2 lg:text-sm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+    <nav className="table-of-contents">
+      <h2 className="toc-title">目录</h2>
+      <ul className="toc-list">
         {headings.map((heading) => (
-          <motion.li
+          <li
             key={heading.id}
-            style={{ paddingLeft: `${(heading.level - 2) * 0.75}rem` }}
-            whileHover={{ x: 4 }}
-            transition={{ duration: 0.2 }}
+            className={`toc-item ${heading.level === 3 ? 'ml-4' : ''} ${
+              activeId === heading.id ? 'active' : ''
+            }`}
           >
             <a
               href={`#${heading.id}`}
-              className={`block rounded-lg py-1 transition-all duration-200 hover:text-blue-500 ${
-                activeId === heading.id
-                  ? 'text-blue-500 font-medium'
-                  : 'text-gray-600 dark:text-gray-400'
-              }`}
               onClick={(e) => {
                 e.preventDefault()
                 document.querySelector(`#${heading.id}`)?.scrollIntoView({
-                  behavior: 'smooth',
+                  behavior: 'smooth'
                 })
               }}
             >
               {heading.text}
             </a>
-          </motion.li>
+          </li>
         ))}
-      </motion.ul>
+      </ul>
     </nav>
   )
 } 

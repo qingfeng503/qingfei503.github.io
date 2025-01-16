@@ -57,7 +57,7 @@ binlog 的 Event 结构（目前主要用的是 v4 版本）如下：
 
 Canal 是由阿里巴巴开源的一个基于 binlog 的增量日志组件，其核心原理是 Canal 伪装成 MySQL 的 slave，发送 dump 协议获取 binlog，解析并存储起来给客户端消费。
 
-![Canal act as slave](/images/20161127_midware_canal/canal_as_slave.jpg)
+![Canal act as slave](/images/20161127_learning_canal/canal_as_slave.jpg)
 
 ## Canal 的核心架构
 
@@ -70,11 +70,11 @@ Canal 是由阿里巴巴开源的一个基于 binlog 的增量日志组件，其
   - EventSink 进行过滤和路由处理
   - EventStore 负责数据存储
 
-![Canal Structure](/images/20161127_midware_canal/canal_structure.jpg)
+![Canal Structure](/images/20161127_learning_canal/canal_structure.jpg)
 
 ## EventParser 设计
 ### 处理流程
-![EventParser](/images/20161127_midware_canal/event_parser.jpg)
+![EventParser](/images/20161127_learning_canal/event_parser.jpg)
 - MysqlConnection 为 EventParser 的核心组件，它通过 dump 协议不断地从 MySQL 获取 binlog，并交给 EventParser 处理；
 - 如果配置了 MySQL 的配置了 standby，MysqlConnection 支持失效转移，从 standby 的数据库获取 binlog；
 - MysqlEventParser 为核心组件，接收到的 Binaly Log 的通过 Binlog parser 进行协议解析，补充一些特定信息；
@@ -82,7 +82,7 @@ Canal 是由阿里巴巴开源的一个基于 binlog 的增量日志组件，其
 - 存储成功后，由 CanalLogPositionManager 定时记录 Binaly Log 位置，其持久化策略支持内存的、文件的、ZK 的以及混合式的；
 
 ### 代码设计
-![EventParser UML](/images/20161127_midware_canal/event_parser_uml.jpg)
+![EventParser UML](/images/20161127_learning_canal/event_parser_uml.jpg)
 
 ### 核心源码解析
 以下核心源码为 AbstractEventParser 类的 start 方法，具体的执行流程见代码注释：
@@ -236,7 +236,7 @@ Canal 是由阿里巴巴开源的一个基于 binlog 的增量日志组件，其
 
 ## EventSink 设计
 ### 处理流程
-![EventSink](/images/20161127_midware_canal/event_sink.jpg)
+![EventSink](/images/20161127_learning_canal/event_sink.jpg)
 
 - 数据过滤：支持通配符的过滤模式，表名、字段内容等；
 - 数据路由/分发：解决 1:n (1 个 parser 对应多个 store 的模式)；
@@ -244,7 +244,7 @@ Canal 是由阿里巴巴开源的一个基于 binlog 的增量日志组件，其
 - 数据加工：在进入 store 之前进行额外的处理，比如 join；
 
 ### 代码设计
-![EventSink](/images/20161127_midware_canal/event_sink_uml.jpg)
+![EventSink](/images/20161127_learning_canal/event_sink_uml.jpg)
 
 ### 核心源码解析
 以下核心代码为 EntryEventSink 类的 sinkData 方法：
@@ -291,14 +291,14 @@ Canal 是由阿里巴巴开源的一个基于 binlog 的增量日志组件，其
 
 ## EventStore 设计
 ### 处理流程
-![EventStore](/images/20161127_midware_canal/event_store.jpg)
+![EventStore](/images/20161127_learning_canal/event_store.jpg)
 
 - EventStore 借鉴了 Disruptor 的 RingBuffer 的实现思路，定义了 3 个 cursor：Put（Sink 模块进行数据存储的最后一次写入位置）、Get（数据订阅获取的最后一次提取位置）、Ack（数据消费成功的最后一次消费位置）；
 - 目前仅实现了 Memory 内存模式，暂不支持文件等方式存储；
 - 这里 Ack 的设计主要是为了确保消息被客户端正常消费，当客户端调用 rollback 时，对应的 Get 会重置到 Ack 的位置；
 
 ### 代码设计
-![EventStore UML](/images/20161127_midware_canal/event_store_uml.jpg)
+![EventStore UML](/images/20161127_learning_canal/event_store_uml.jpg)
 
 ### 核心源码解析
 以下核心代码为 MemoryEventStoreWithBuffer 类的几个重要操作方法：
@@ -477,7 +477,7 @@ Canal 是由阿里巴巴开源的一个基于 binlog 的增量日志组件，其
 
 ## Instance 设计
 ### 代码设计
-![Canal Instance](/images/20161127_midware_canal/canal_instance.jpg)
+![Canal Instance](/images/20161127_learning_canal/canal_instance.jpg)
 
 ### 核心源码解析
 CanalInstance 的设计比较简单，主要是包含了上述三个组件：
@@ -510,14 +510,14 @@ CanalInstance 的设计比较简单，主要是包含了上述三个组件：
 
 ## Servers 设计
 ### 代码设计
-![Canal Server](/images/20161127_midware_canal/canal_server.jpg)
+![Canal Server](/images/20161127_learning_canal/canal_server.jpg)
 
 ### netty
 Canal Server 是基于 Netty 和 Protobuf 实现的，Netty 是一个很流行的 NIO 框架，其官网描述为：
 
 > Netty is a NIO client server framework which enables quick and easy development of network applications such as protocol servers and clients. It greatly simplifies and streamlines network programming such as TCP and UDP socket server.
 
-![netty](/images/20161127_midware_canal/netty.jpg)
+![netty](/images/20161127_learning_canal/netty.jpg)
 
 - client 传递过来的消息会有个 Channel 对象接收，然后产生一个 Channel 事件，并发送到 ChannelPipeline。
 - ChannelPipeline 会选择一个 ChannelHandler 进行处理。
