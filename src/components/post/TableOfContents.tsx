@@ -22,13 +22,26 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
       { rootMargin: '0% 0% -80% 0%' }
     )
 
-    const headingElements = document.querySelectorAll('h2, h3, h4')
-    headingElements.forEach((element) => observer.observe(element))
+    // 只观察文章中实际存在的标题
+    headings.forEach(heading => {
+      const id = slugify(heading.text)
+      const element = document.getElementById(id)
+      if (element) {
+        observer.observe(element)
+      }
+    })
 
     return () => {
-      headingElements.forEach((element) => observer.unobserve(element))
+      // 清理观察器
+      headings.forEach(heading => {
+        const id = slugify(heading.text)
+        const element = document.getElementById(id)
+        if (element) {
+          observer.unobserve(element)
+        }
+      })
     }
-  }, [])
+  }, [headings])
 
   if (headings.length === 0) return null
 

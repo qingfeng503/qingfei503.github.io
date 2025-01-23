@@ -7,6 +7,7 @@ import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { TableOfContents } from '@/components/post/TableOfContents'
 import { PostRoute, createTagRoute } from '@/lib/routes'
+import { useEffect, useState, useRef } from 'react'
 
 interface ArticleLayoutProps {
   post: Post
@@ -16,9 +17,23 @@ interface ArticleLayoutProps {
 
 export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) {
   const MDXContent = useMDXComponent(post.body.code)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [headings, setHeadings] = useState<{ level: number; text: string }[]>([])
 
   // 处理标签
   const tags = post.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || []
+
+  // 提取标题
+  useEffect(() => {
+    if (!contentRef.current) return
+    
+    const elements = contentRef.current.querySelectorAll('h2, h3, h4')
+    const headingsData = Array.from(elements).map(element => ({
+      level: parseInt(element.tagName[1]),
+      text: element.textContent || ''
+    }))
+    setHeadings(headingsData)
+  }, [])
 
   return (
     <article className="min-h-screen w-full">
@@ -45,7 +60,7 @@ export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) 
           {/* 文章布局 */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr,280px] gap-8 items-start">
             {/* 文章内容 */}
-            <div className="min-w-0 w-full prose prose-gray dark:prose-invert 
+            <div ref={contentRef} className="min-w-0 w-full prose prose-gray dark:prose-invert 
               prose-headings:scroll-mt-20
               prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-6 prose-h2:mt-12 lg:prose-h2:text-3xl
               prose-h3:text-xl prose-h3:font-medium prose-h3:mb-4 prose-h3:mt-8 lg:prose-h3:text-2xl
@@ -63,7 +78,7 @@ export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) 
             {/* 目录导航 */}
             <aside className="hidden lg:block">
               <div className="sticky top-20 w-full">
-                <TableOfContents />
+                <TableOfContents headings={headings} />
               </div>
             </aside>
           </div>
