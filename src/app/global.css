@@ -208,3 +208,11 @@ input[type='email'] {
 .prose .callout > p {
   margin: 0 !important;
 }
+
+/* 添加 iOS 滚动优化 */
+@layer utilities {
+  .ios-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+}

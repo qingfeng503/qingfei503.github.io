@@ -32,7 +32,7 @@ export const PostFooter = ({
                             key={tag.trim()}
                             className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                         >
-                            #&nbsp;{tag.trim()}
+                            {tag.trim()}
                         </span>
                     ))}
                 </div>

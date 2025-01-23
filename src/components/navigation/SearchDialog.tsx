@@ -86,7 +86,7 @@ export function SearchDialog({ isOpen, onClose, onOpen }: SearchDialogProps) {
 
           {/* 搜索结果 */}
           {results.length > 0 && (
-            <div className="max-h-[60vh] overflow-auto divide-y divide-gray-100 dark:divide-gray-800">
+            <div className="max-h-[60vh] ios-scroll divide-y divide-gray-100 dark:divide-gray-800">
               {results.map((post) => (
                 <Link
                   key={post.url}

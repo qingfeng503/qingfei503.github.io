@@ -63,7 +63,7 @@ export function Navigation() {
 
       {/* 导航菜单 */}
       <nav className={cn(
-        "fixed top-0 left-0 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 py-8 px-4 overflow-y-auto transition-all duration-300 z-50",
+        "fixed top-0 left-0 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 py-8 px-4 ios-scroll transition-all duration-300 z-50",
         "lg:w-64 lg:translate-x-0",
         isMobileMenuOpen ? "w-[280px] translate-x-0" : "w-[280px] -translate-x-full",
       )}>
