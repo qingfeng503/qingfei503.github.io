@@ -5,9 +5,8 @@ import Link from 'next/link'
 import { Post } from 'contentlayer/generated'
 import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
 import { useMDXComponent } from 'next-contentlayer/hooks'
-import { cn } from '@/lib/utils'
 import { TableOfContents } from '@/components/post/TableOfContents'
-import { PostRoute, TagRoute, createTagRoute } from '@/lib/routes'
+import { PostRoute, createTagRoute } from '@/lib/routes'
 
 interface ArticleLayoutProps {
   post: Post
@@ -48,11 +47,11 @@ export function ArticleLayout({ post, prevPost, nextPost }: ArticleLayoutProps) 
             {/* 文章内容 */}
             <div className="min-w-0 w-full prose prose-gray dark:prose-invert 
               prose-headings:scroll-mt-20
-              prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-6 prose-h2:mt-12
-              prose-h3:text-xl prose-h3:font-medium prose-h3:mb-4 prose-h3:mt-8
-              prose-p:text-base prose-p:leading-7 prose-p:mb-6
+              prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-6 prose-h2:mt-12 lg:prose-h2:text-3xl
+              prose-h3:text-xl prose-h3:font-medium prose-h3:mb-4 prose-h3:mt-8 lg:prose-h3:text-2xl
+              prose-p:text-base prose-p:leading-7 prose-p:mb-6 lg:prose-p:text-lg lg:prose-p:leading-8
               prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-              prose-code:text-sm prose-code:font-normal
+              prose-code:text-sm prose-code:font-normal lg:prose-code:text-base
               prose-pre:my-6 prose-pre:p-4 prose-pre:bg-gray-50 prose-pre:dark:bg-gray-800
               prose-blockquote:border-l-4 prose-blockquote:border-gray-200 prose-blockquote:pl-4 prose-blockquote:italic
               sm:prose-pre:rounded-lg

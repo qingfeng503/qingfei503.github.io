@@ -1,5 +1,4 @@
 import { Post } from 'contentlayer/generated'
-import { Container } from '@/components/common/Container'
 import { PostCard } from '@/components/common/PostCard'
 
 interface PostListProps {
@@ -13,7 +12,7 @@ export function PostList({ posts }: PostListProps) {
         <section className="w-full">
             <div className="flex flex-col space-y-8">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
                         最新文章
                     </h2>
                 </div>

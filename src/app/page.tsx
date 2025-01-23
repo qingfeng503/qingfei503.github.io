@@ -4,6 +4,7 @@ import { Hero } from '@/components/home/Hero'
 import { FeaturedSection } from '@/components/home/FeaturedSection'
 import { PostList } from '@/components/home/PostList'
 import { getFeaturedPost, getRecentPosts } from '@/lib/posts'
+import { Container } from '@/components/common/Container'
 
 export default function Home() {
     const featuredPost = getFeaturedPost(allPosts)
@@ -17,7 +18,7 @@ export default function Home() {
             <Hero />
 
             {/* 主要内容区域 */}
-            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Container>
                 <div className="space-y-16 py-12 sm:py-16 lg:py-20">
                     {/* 特色文章 */}
                     {featuredPost && <FeaturedSection post={featuredPost} />}
@@ -25,7 +26,7 @@ export default function Home() {
                     {/* 最新文章列表 */}
                     <PostList posts={recentPosts} />
                 </div>
-            </div>
+            </Container>
         </main>
     )
 }

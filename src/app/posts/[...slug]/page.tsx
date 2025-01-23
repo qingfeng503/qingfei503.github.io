@@ -1,13 +1,10 @@
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
 import { getMDXComponent } from 'next-contentlayer/hooks'
-import { format, parseISO } from 'date-fns'
 import { TableOfContents } from '@/components/post/TableOfContents'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
 import { Container } from '@/components/common/Container'
 import { calculateReadingTime } from '@/lib/readingTime'
-import { getCategoryName, CATEGORY_MAP } from '@/lib/images'
-import Link from 'next/link'
 import { PostHeader } from '@/components/post/PostHeader'
 import { PostContent } from '@/components/post/PostContent'
 import { PostFooter } from '@/components/post/PostFooter'
@@ -24,11 +21,7 @@ const getAdjacentPosts = (currentPost: any) => {
         .filter(post => post.category === currentPost.category && post._id !== currentPost._id)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-    const currentIndex = categoryPosts.findIndex(post => post._id === currentPost._id)
-    const prevPost = currentIndex < categoryPosts.length - 1 ? categoryPosts[currentIndex + 1] : null
-    const nextPost = currentIndex > 0 ? categoryPosts[currentIndex - 1] : null
-
-    return { prevPost, nextPost, categoryPosts }
+    return { categoryPosts }
 }
 
 // 获取推荐文章
@@ -36,7 +29,7 @@ const getRecommendedPosts = (currentPost: any, categoryPosts: any[]) => {
     // 如果同类文章不足4篇，则补充最新文章
     if (categoryPosts.length < 4) {
         const latestPosts = allPosts
-            .filter(post => post._id !== currentPost._id)
+            .filter(post => post._id !== currentPost._id && post.category !== currentPost.category)
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
             .slice(0, 4 - categoryPosts.length)
 
@@ -64,6 +57,25 @@ export const generateMetadata = ({ params }: PostProps) => {
     }
 }
 
+function stripMarkdownLinks(text: string): string {
+    // 匹配 Markdown 链接语法 [text](url)
+    return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+}
+
+function extractHeadings(content: string) {
+    const headingRegex = /^#{2,4}\s+(.+)$/gm
+    const headings: { level: number; text: string }[] = []
+    let match
+
+    while ((match = headingRegex.exec(content)) !== null) {
+        const text = stripMarkdownLinks(match[1])
+        const level = match[0].split('#').length - 1
+        headings.push({ level, text })
+    }
+
+    return headings
+}
+
 const PostLayout = ({ params }: PostProps) => {
     const post = allPosts.find((post) => {
         const urlPath = post.url.replace('/posts/', '')
@@ -74,42 +86,51 @@ const PostLayout = ({ params }: PostProps) => {
 
     const Content = getMDXComponent(post.body.code)
     const readingTime = calculateReadingTime(post.body.raw)
-    const { prevPost, nextPost, categoryPosts } = getAdjacentPosts(post)
+    const { categoryPosts } = getAdjacentPosts(post)
     const recommendedPosts = getRecommendedPosts(post, categoryPosts)
+    const headings = extractHeadings(post.body.raw)
 
     return (
-        <div className="relative w-full py-6 md:py-8">
+        <div className="relative w-full min-h-screen">
             <ReadingProgress />
-            <Container size="xl">
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,_1fr)_300px] xl:gap-12">
-                    <div className="mx-auto w-full">
-                        <article className="prose prose-lg dark:prose-invert max-w-none">
-                            <PostHeader
-                                title={post.title}
-                                date={post.date}
-                                readingTime={readingTime}
-                                category={post.category}
-                            />
-                            <PostContent>
-                                <Content />
-                            </PostContent>
-                        </article>
+            <Container size="default">
+                <div className="py-10 lg:py-12">
+                    <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,_1fr)_240px] gap-10">
+                        {/* 中间内容区 */}
+                        <main className="min-w-0">
+                            <div className="max-w-3xl">
+                                <article>
+                                    <PostHeader
+                                        title={post.title}
+                                        date={post.date}
+                                        readingTime={readingTime}
+                                        category={post.category}
+                                    />
+                                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                                        <PostContent>
+                                            <Content />
+                                        </PostContent>
+                                    </div>
+                                </article>
 
-                        <PostFooter
-                            tags={post.tags}
-                            prevPost={prevPost}
-                            nextPost={nextPost}
-                            recommendedPosts={recommendedPosts}
-                            category={post.category}
-                            categoryPostsCount={categoryPosts.length}
-                        />
+                                <div className="mt-16">
+                                    <PostFooter
+                                        tags={post.tags}
+                                        recommendedPosts={recommendedPosts}
+                                        category={post.category}
+                                        categoryPostsCount={categoryPosts.length}
+                                    />
+                                </div>
+                            </div>
+                        </main>
+
+                        {/* 右侧目录 */}
+                        <aside className="hidden xl:block">
+                            <div className="sticky top-24">
+                                <TableOfContents headings={headings} />
+                            </div>
+                        </aside>
                     </div>
-
-                    <aside className="hidden lg:block">
-                        <div className="sticky top-8">
-                            <TableOfContents />
-                        </div>
-                    </aside>
                 </div>
             </Container>
         </div>

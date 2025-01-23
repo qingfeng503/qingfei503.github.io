@@ -16,19 +16,19 @@ export function NavigationProfile() {
           />
         </div>
         <div className="text-center space-y-2">
-          <h1 className="text-lg font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
             Gino
           </h1>
           <div className="flex items-center justify-center gap-1.5 text-gray-600 dark:text-gray-400">
-            <FaEnvelope className="w-3 h-3" />
+            <FaEnvelope className="w-3.5 h-3.5" />
             <a 
               href="mailto:hi@gino.bot"
-              className="text-xs hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+              className="text-sm hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
             >
               hi@gino.bot
             </a>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium italic">
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium italic">
             Just be funny.
           </p>
         </div>

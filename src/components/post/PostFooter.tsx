@@ -11,8 +11,6 @@ interface Post {
 
 interface PostFooterProps {
     tags?: string
-    prevPost: Post | null
-    nextPost: Post | null
     recommendedPosts: Post[]
     category?: string
     categoryPostsCount: number
@@ -20,52 +18,29 @@ interface PostFooterProps {
 
 export const PostFooter = ({
     tags,
-    prevPost,
-    nextPost,
     recommendedPosts,
     category,
     categoryPostsCount
 }: PostFooterProps) => {
     return (
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
-            <div className="flex flex-wrap gap-2 mb-8">
-                {tags?.split(',').map((tag) => (
-                    <span
-                        key={tag.trim()}
-                        className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
-                    >
-                        #&nbsp;{tag.trim()}
-                    </span>
-                ))}
-            </div>
-
-            <nav className="grid gap-4 sm:grid-cols-2 mb-12">
-                {prevPost && (
-                    <Link
-                        href={prevPost.url as `/posts/${string}/${string}`}
-                        className="group flex flex-col gap-1 rounded-lg border p-4 transition-colors hover:border-blue-500 dark:border-gray-800"
-                    >
-                        <span className="text-sm text-gray-500 dark:text-gray-400">上一篇</span>
-                        <span className="font-medium text-gray-900 group-hover:text-blue-500 dark:text-gray-100 line-clamp-2">
-                            {prevPost.title}
+            {/* 标签区域 */}
+            {tags && (
+                <div className="flex flex-wrap gap-2 mb-8">
+                    {tags.split(',').map((tag) => (
+                        <span
+                            key={tag.trim()}
+                            className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                        >
+                            #&nbsp;{tag.trim()}
                         </span>
-                    </Link>
-                )}
-                {nextPost && (
-                    <Link
-                        href={nextPost.url as `/posts/${string}/${string}`}
-                        className="group flex flex-col gap-1 rounded-lg border p-4 transition-colors hover:border-blue-500 dark:border-gray-800 sm:text-right"
-                    >
-                        <span className="text-sm text-gray-500 dark:text-gray-400">下一篇</span>
-                        <span className="font-medium text-gray-900 group-hover:text-blue-500 dark:text-gray-100 line-clamp-2">
-                            {nextPost.title}
-                        </span>
-                    </Link>
-                )}
-            </nav>
+                    ))}
+                </div>
+            )}
 
+            {/* 推荐文章区域 */}
             <div className="space-y-8">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">更多文章</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">相关文章</h2>
                 <div className="grid gap-4 sm:grid-cols-2">
                     {recommendedPosts.map(post => (
                         <Link

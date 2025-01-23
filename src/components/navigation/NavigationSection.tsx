@@ -10,7 +10,7 @@ export function NavigationSection({ section }: NavigationSectionProps) {
 
   return (
     <div>
-      <h4 className="px-2 pt-5 pb-2 text-xs font-semibold text-gray-1000 text-opacity-40 dark:text-white">
+      <h4 className="px-2 pt-5 pb-2 text-sm font-semibold text-gray-1000 text-opacity-40 dark:text-white">
         {title}
       </h4>
       <ul className="space-y-1">
