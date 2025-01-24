@@ -44,19 +44,6 @@ export const generateStaticParams = async () =>
         slug: post.url.replace('/posts/', '').split('/')
     }))
 
-export const generateMetadata = ({ params }: PostProps) => {
-    const post = allPosts.find((post) => {
-        const urlPath = post.url.replace('/posts/', '')
-        return urlPath === params.slug.join('/')
-    })
-
-    if (!post) return {}
-    return {
-        title: post.title,
-        description: post.description
-    }
-}
-
 function stripMarkdownLinks(text: string): string {
     // 匹配 Markdown 链接语法 [text](url)
     return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
@@ -76,7 +63,7 @@ function extractHeadings(content: string) {
     return headings
 }
 
-const PostLayout = ({ params }: PostProps) => {
+export default function PostPage({ params }: PostProps) {
     const post = allPosts.find((post) => {
         const urlPath = post.url.replace('/posts/', '')
         return urlPath === params.slug.join('/')
@@ -136,5 +123,3 @@ const PostLayout = ({ params }: PostProps) => {
         </div>
     )
 }
-
-export default PostLayout
