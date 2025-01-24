@@ -12,6 +12,7 @@ const config: Config = {
     extend: {
       animation: {
         blob: 'blob 7s infinite',
+        float: 'float 6s ease-in-out infinite',
       },
       keyframes: {
         blob: {
@@ -26,6 +27,14 @@ const config: Config = {
           },
           '100%': {
             transform: 'translate(0px, 0px) scale(1)',
+          },
+        },
+        float: {
+          '0%, 100%': {
+            transform: 'translateY(0)',
+          },
+          '50%': {
+            transform: 'translateY(-20px)',
           },
         },
       },
