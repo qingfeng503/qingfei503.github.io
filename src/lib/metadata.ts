@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { WEBSITE_HOST_URL } from './constants'
 
 const meta = {
-  title: 'Gino Notes',
-  description: "Gino Zhang's personal blog. I write about product, development and life.",
+  title: 'Ymq Notes',
+  description: "Ymq's personal blog. I write about product, development and life.",
   image: `${WEBSITE_HOST_URL}/logo.jpg`,
   author: 'Gino Zhang',
 }
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(WEBSITE_HOST_URL),
   title: {
     default: meta.title,
-    template: '%s | Gino Notes',
+    template: '%s | Ymq Notes',
   },
   description: meta.description,
   openGraph: {

@@ -59,14 +59,11 @@ export const navigation: NavigationConfig = {
   ],
   projects: [
     { href: 'https://bestblogs.dev', label: 'BestBlogs.dev', icon: FaCode },
-    { href: 'https://bitflowing.net', label: 'BitFlowing', icon: FaBrain },
-    { href: 'https://hiagent.io', label: 'HiAgent', icon: FaRobot },
-    { href: 'https://tiky.ai', label: 'Tiky AI', icon: FaLightbulb },
   ],
   online: [
-    { href: 'https://github.com/ginobefun', label: 'GitHub', icon: FaGithub },
+    { href: 'https://github.com/yunmaoQu', label: 'GitHub', icon: FaGithub },
     {
-      href: 'https://twitter.com/hongming731',
+      href: 'https://twitter.com/',
       label: 'Twitter',
       icon: FaTwitter,
     },

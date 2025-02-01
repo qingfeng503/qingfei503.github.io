@@ -9,7 +9,7 @@ import { Container } from '@/components/common/Container'
 
 const meta = {
     title: '关于我 - Just be funny',
-    description: '开发工程师，AI 爱好者，篮球迷，终身学习者。每周发送 AI 精选文章，欢迎订阅！',
+    description: '开发工程师',
     url: `${WEBSITE_HOST_URL}/about`,
 }
 
@@ -70,27 +70,27 @@ const contacts = [
     {
         icon: FaWeixin,
         name: '微信',
-        value: 'xingxing174556571',
+        value: '666',
         color: 'text-green-500',
     },
     {
         icon: FaGithub,
         name: 'GitHub',
-        value: 'ginobefun',
-        link: 'https://github.com/ginobefun',
+        value: 'ymq',
+        link: 'https://github.com/yunmaoQu',
         color: 'text-gray-800 dark:text-gray-200',
     },
     {
         icon: FaTwitter,
         name: 'Twitter',
-        value: '@hongming731',
-        link: 'https://twitter.com/hongming731',
+        value: '@111',
+        link: 'https://twitter.com/',
         color: 'text-blue-400',
     },
     {
         icon: HiMail,
         name: '邮件',
-        value: 'hi@gino.bot',
+        value: '1@gmail.com',
         link: 'mailto:hi@gino.bot',
         color: 'text-red-500',
     },

@@ -1,0 +1,76 @@
+---
+title: Cassandra 
+date: 2025-02-01
+description: Cassandra tech 45Talk 
+category: dev
+tags: Cassandra
+cover: /covers/cover5.jpeg
+slug: learning
+---
+
+
+## Cassandra 技术45讲 大纲
+
+**总览：** 本课程旨在全面讲解 Apache Cassandra 分布式 NoSQL 数据库的核心技术，从基本概念到高级特性，再到实际应用和运维，帮助学员掌握 Cassandra 的设计、开发、管理和优化技能，能够构建高可用、高性能、可扩展的分布式系统。
+
+**阶段一：Cassandra 基础入门 (约10讲)**
+
+* **第1讲：NoSQL 与 Cassandra 概述**
+    * NoSQL 数据库的概念、类型和特点 (Key-Value, Document, Column-Family, Graph)
+    * CAP 理论、BASE 理论在 NoSQL 中的应用
+    * Cassandra 的起源、发展历程、特点与优势
+    * Cassandra 的应用场景与适用性分析 (时间序列数据、物联网、社交网络等)
+    * Cassandra 与传统关系型数据库 (RDBMS) 的对比
+
+* **第2讲：Cassandra 架构与核心概念**
+    * 分布式系统架构 (P2P, 去中心化)
+    * Cassandra 的节点 (Node)、数据中心 (Data Center)、集群 (Cluster)
+    * Ring 架构、数据分片 (Partitioning) 与路由
+    * 副本 (Replication) 策略与一致性级别 (Consistency Level)
+    * Gossip 协议与节点发现、集群成员管理
+
+* **第3讲：Cassandra 安装与配置**
+    * Cassandra 的下载与安装 (Linux, macOS, Windows - 建议 Linux 环境)
+    * Cassandra 配置文件 (cassandra.yaml) 详解与常用配置项
+    * JVM 配置与性能调优初步
+    * 启动、停止、重启 Cassandra 服务
+    * 使用 nodetool 命令行工具进行集群管理和监控
+
+* **第4讲：CQL (Cassandra Query Language) 基础语法**
+    * CQLShell (cqlsh) 的使用 (连接、执行 CQL 命令、退出)
+    * Keyspace 的创建、删除与选择 (CREATE KEYSPACE, DROP KEYSPACE, USE)
+    * Table 的创建 (CREATE TABLE) 语法详解 (字段类型、主键、静态列、Clustering Column)
+    * Table 的修改 (ALTER TABLE) 语法详解 (添加/删除列、修改列类型、修改属性)
+    * Table 的删除 (DROP TABLE, TRUNCATE TABLE)
+
+* **第5讲：Cassandra 数据类型详解**
+    * 基本数据类型 (text, varchar, int, bigint, float, double, boolean, uuid, timeuuid, blob)
+    * 集合数据类型 (list, set, map)
+    * 用户自定义类型 (UDT)
+    * 数据类型的选择与最佳实践
+
+* **第6讲：CQL 数据操作 (CRUD)**
+    * 插入数据 (INSERT INTO) 语法详解 (单行插入、JSON 格式插入)
+    * 查询数据 (SELECT) 语法详解 (WHERE 条件、LIMIT、ORDER BY - 注意 Cassandra 的查询限制)
+    * 更新数据 (UPDATE) 语法详解 (SET, WHERE 条件更新)
+    * 删除数据 (DELETE) 语法详解 (WHERE 条件删除、删除列)
+    * 批量操作 (BATCH) 语句
+
+* **第7讲：Cassandra 索引 (Indexing)**
+    * 主键索引 (Primary Key Index) 的原理与特点
+    * 二级索引 (Secondary Index) 的类型与使用场景 (Row-level, SASI)
+    * 创建、删除二级索引 (CREATE INDEX, DROP INDEX)
+    * 索引的选择与性能考量 (避免过度索引)
+
+* **第8讲：Cassandra 集合 (Collections) 的使用**
+    * List 集合的特点与应用场景
+    * Set 集合的特点与应用场景
+    * Map 集合的特点与应用场景
+    * 集合的 CRUD 操作与注意事项 (性能影响)
+
+* **第9讲：Cassandra 轻量级事务 (Lightweight Transactions - LWT)**
+    * LWT 的概念与应用场景 (实现原子性操作)
+    * 使用 `IF NOT EXISTS` 和 `IF` 条件进行插入和更新
+    * LWT 的实现原理与性能影响
+    * 何时使用 LWT，何时避免使用
+

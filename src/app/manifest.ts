@@ -4,7 +4,7 @@ import { metadata } from '@/lib/metadata'
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: metadata.title?.toString(),
-    short_name: 'Gino Notes',
+    short_name: 'Ymq Notes',
     description: metadata.description?.toString(),
     start_url: '/',
     display: 'standalone',
