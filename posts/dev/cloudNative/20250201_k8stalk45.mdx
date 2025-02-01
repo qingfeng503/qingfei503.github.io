@@ -1,0 +1,317 @@
+---
+title: k8s talk45
+date: 2025-02-01
+description: k8s talk 
+category: dev
+tags: k8s
+cover: /covers/cover1.jpeg
+slug: k8sdraft
+---
+
+
+## Kubernetes (K8s) 技术45讲 
+
+
+**阶段一：容器与 Kubernetes 基础入门 (约15讲)**
+
+* **第1讲：容器技术概览**
+    * 什么是容器？容器的优势与应用场景
+    * Docker 容器引擎介绍与安装
+    * Docker 镜像 (Image) 的概念、构建与管理
+    * Docker 容器 (Container) 的生命周期管理
+    * Dockerfile 编写与镜像构建最佳实践
+
+* **第2讲：Docker 核心技术深入**
+    * 命名空间 (Namespaces) 与资源隔离
+    * 控制组 (Cgroups) 与资源限制
+    * Union File System 与镜像分层
+    * Docker 网络模式 (Bridge, Host, None, Container)
+    * Docker Volume 数据卷与持久化存储
+
+* **第3讲：Kubernetes 概述与发展历程**
+    * 什么是 Kubernetes？Kubernetes 的起源与发展
+    * Kubernetes 的核心特性与优势 (自动化部署、弹性伸缩、服务发现、负载均衡、自我修复)
+    * Kubernetes 的架构设计理念 (声明式配置、控制平面、工作节点)
+    * Kubernetes 的应用场景与适用性分析 (微服务、DevOps、CI/CD)
+    * Kubernetes 版本介绍与选择
+
+* **第4讲：Kubernetes 集群架构详解**
+    * Kubernetes 控制平面 (Control Plane) 组件：API Server, Scheduler, Controller Manager, etcd
+    * Kubernetes 工作节点 (Worker Node) 组件：Kubelet, Kube-proxy, Container Runtime (Docker, containerd, CRI-O)
+    * Kubernetes Master 节点与 Worker 节点的功能与交互
+    * Kubernetes 组件间的通信机制 (API Server 中心化)
+
+* **第5讲：Kubernetes 集群部署与安装**
+    * Minikube 单节点本地集群部署
+    * kubeadm 多节点集群部署 (生产环境推荐)
+    * 云平台托管 Kubernetes 服务 (AWS EKS, Azure AKS, Google GKE) 介绍
+    * Kubernetes Dashboard UI 部署与使用
+    * kubectl 命令行工具安装与配置
+
+* **第6讲：kubectl 命令行工具核心操作**
+    * kubectl 常用命令语法结构 (verbs, resources, options)
+    * kubectl 获取集群信息 (cluster-info, api-resources, api-versions)
+    * kubectl 查看资源对象 (get, describe, logs, exec, port-forward)
+    * kubectl 创建、更新、删除资源对象 (create, apply, delete, replace, edit)
+    * kubectl 命名空间 (Namespace) 操作 (create, get, delete, use-context)
+
+* **第7讲：Kubernetes 核心概念：Pod (Pod)**
+    * Pod 的定义与特性 (最小部署单元、共享网络和存储)
+    * Pod 的生命周期 (创建、就绪、运行、失败、删除)
+    * Pod 的配置详解 (containers, volumes, restartPolicy, nodeSelector, affinity, tolerations)
+    * 多容器 Pod (Multi-container Pod) 的设计模式 (Sidecar, Ambassador, Adapter)
+    * Init Containers 初始化容器
+
+* **第8讲：Kubernetes 核心概念：Deployment (Deployment)**
+    * Deployment 的定义与作用 (声明式应用部署、滚动更新、回滚)
+    * Deployment 的配置详解 (replicas, selector, template, strategy)
+    * Deployment 的滚动更新 (Rolling Update) 策略与参数调优
+    * Deployment 的回滚 (Rollback) 操作与版本管理
+    * Deployment 的扩容与缩容 (Scale)
+
+* **第9讲：Kubernetes 核心概念：Service (Service)**
+    * Service 的定义与作用 (服务发现、负载均衡、抽象后端 Pod)
+    * Service 的类型 (ClusterIP, NodePort, LoadBalancer, ExternalName)
+    * Service 的配置详解 (selector, ports, type, externalIPs, loadBalancerIP)
+    * Service 的服务发现机制 (DNS, 环境变量)
+    * Headless Service 无头服务
+
+* **第10讲：Kubernetes 核心概念：Namespace (Namespace)**
+    * Namespace 的定义与作用 (资源隔离、多租户管理、环境划分)
+    * Namespace 的创建、删除与管理 (create, delete, kubectl config set-context --namespace)
+    * Namespace 的资源配额 (ResourceQuota) 与限制 (LimitRange)
+    * 默认 Namespace 与 kube-system Namespace
+
+* **第11讲：Kubernetes 核心概念：Volume (Volume) 与 PersistentVolume (PV) / PersistentVolumeClaim (PVC)**
+    * Volume 的定义与作用 (Pod 间数据共享、容器持久化存储)
+    * Volume 的类型 (emptyDir, hostPath, local, configMap, secret, persistentVolumeClaim)
+    * PersistentVolume (PV) 的定义与生命周期 (集群资源、静态/动态 Provisioning)
+    * PersistentVolumeClaim (PVC) 的定义与作用 (用户资源请求、绑定 PV)
+    * StorageClass 存储类与动态 PV Provisioning
+
+* **第12讲：Kubernetes 核心概念：ConfigMap (ConfigMap) 与 Secret (Secret)**
+    * ConfigMap 的定义与作用 (配置数据集中管理、解耦配置与代码)
+    * ConfigMap 的创建与使用 (命令行、YAML 文件、挂载为 Volume 或环境变量)
+    * Secret 的定义与作用 (敏感数据安全管理、加密存储)
+    * Secret 的类型 (Opaque, kubernetes.io/tls, kubernetes.io/dockerconfigjson)
+    * Secret 的创建与使用 (命令行、YAML 文件、挂载为 Volume 或环境变量)
+
+* **第13讲：Kubernetes 工作负载进阶：StatefulSet (StatefulSet)**
+    * StatefulSet 的定义与作用 (有状态应用部署、稳定网络标识、有序部署和扩缩容)
+    * StatefulSet 的配置详解 (serviceName, replicas, selector, template, volumeClaimTemplates, updateStrategy)
+    * StatefulSet 的 Headless Service 与稳定网络标识 (hostname, DNS)
+    * StatefulSet 的有序部署、扩缩容与删除 (Ordinal Index)
+    * StatefulSet 的应用场景 (数据库、消息队列、分布式存储)
+
+* **第14讲：Kubernetes 工作负载进阶：DaemonSet (DaemonSet)**
+    * DaemonSet 的定义与作用 (节点级别守护进程部署、每个节点运行一个 Pod)
+    * DaemonSet 的配置详解 (selector, template, updateStrategy, nodeSelector, tolerations)
+    * DaemonSet 的 Pod 调度策略 (每个节点一个 Pod)
+    * DaemonSet 的应用场景 (日志收集、监控 agent、网络插件)
+
+* **第15讲：Kubernetes 工作负载进阶：Job (Job) 与 CronJob (CronJob)**
+    * Job 的定义与作用 (批处理任务、一次性任务执行)
+    * Job 的配置详解 (completions, parallelism, backoffLimit, activeDeadlineSeconds)
+    * Job 的完成模式 (成功完成、失败重试)
+    * CronJob 的定义与作用 (定时任务、周期性任务执行)
+    * CronJob 的配置详解 (schedule, jobTemplate, concurrencyPolicy, startingDeadlineSeconds)
+    * CronJob 的时间表达式 (Cron 语法)
+
+**阶段二：Kubernetes 网络与服务暴露 (约10讲)**
+
+* **第16讲：Kubernetes 网络模型与 CNI (Container Network Interface)**
+    * Kubernetes 网络模型 (Pod 网络、Service 网络、集群外部网络)
+    * CNI (Container Network Interface) 接口与网络插件 (Calico, Flannel, Cilium, Weave Net)
+    * CNI 插件的安装与配置
+    * Pod 网络通信原理 (Overlay Network, Underlay Network)
+    * Service 网络通信原理 (kube-proxy, IPVS/iptables 模式)
+
+* **第17讲：Service 服务发现与负载均衡深入**
+    * Service 的 ClusterIP 模式详解 (集群内部服务访问)
+    * Service 的 NodePort 模式详解 (节点端口暴露、外部访问)
+    * Service 的 LoadBalancer 模式详解 (云平台负载均衡器集成、外部访问)
+    * Service 的 ExternalName 模式详解 (外部服务别名)
+    * kube-proxy 组件的 IPVS 模式与 iptables 模式对比
+
+* **第18讲：Ingress (Ingress) 与 HTTP 路由**
+    * Ingress 的定义与作用 (HTTP 路由、外部访问入口、统一入口管理)
+    * Ingress Controller 的部署与选择 (Nginx Ingress Controller, Traefik, HAProxy Ingress)
+    * Ingress 资源对象配置详解 (rules, paths, backend, TLS, annotations)
+    * 基于域名、路径的 HTTP 路由规则配置
+    * TLS/SSL 证书配置与 HTTPS 访问
+
+* **第19讲：NetworkPolicy (NetworkPolicy) 网络策略**
+    * NetworkPolicy 的定义与作用 (Pod 级别网络隔离、安全策略)
+    * NetworkPolicy 的配置详解 (podSelector, ingress, egress, policyTypes)
+    * NetworkPolicy 的策略类型 (Ingress, Egress)
+    * NetworkPolicy 的规则匹配 (PodSelector, NamespaceSelector, IPBlock)
+    * NetworkPolicy 的应用场景 (微服务安全隔离、多租户网络隔离)
+
+* **第20讲：Service Mesh (服务网格) 概念与初步**
+    * Service Mesh 的概念与背景 (微服务架构挑战、服务治理需求)
+    * Service Mesh 的核心组件 (控制平面、数据平面、Sidecar Proxy)
+    * Service Mesh 的核心功能 (服务发现、负载均衡、流量管理、安全认证、可观测性)
+    * 常用 Service Mesh 框架介绍 (Istio, Linkerd, Consul Connect)
+    * Istio 初步体验 (部署 Istio, 部署应用到 Istio, 流量管理示例)
+
+* **第21讲：DNS 服务与 Kubernetes 服务发现**
+    * Kubernetes 集群内部 DNS 服务 (CoreDNS) 介绍与配置
+    * Pod 内 DNS 解析流程与 Service 服务发现
+    * 自定义 DNS 配置 (Pod dnsPolicy, dnsConfig)
+    * ExternalDNS 组件介绍 (外部 DNS 服务集成、自动注册 Ingress/Service DNS 记录)
+
+* **第22讲：服务暴露最佳实践与策略**
+    * 选择合适的服务暴露方式 (NodePort, LoadBalancer, Ingress) 的原则
+    * Ingress Controller 的高可用部署与负载均衡
+    * 使用 Cert-Manager 自动管理 TLS 证书
+    * 金丝雀发布 (Canary Release)、蓝绿发布 (Blue/Green Deployment)、滚动发布 (Rolling Update) 策略
+    * 基于流量的灰度发布 (Traffic Splitting) 与 A/B 测试 (Service Mesh 支持)
+
+* **第23讲：跨集群服务发现与联邦 (Federation) 概念**
+    * 多集群管理与服务发现的挑战
+    * Kubernetes Federation (v1, v2) 概念与架构 (已逐步被替代)
+    * 多集群服务发现与访问方案 (Service Mesh 多集群支持、Submariner 等)
+    * 跨集群应用部署与管理策略 (Placement Policy)
+
+* **第24讲：外部访问集群内部服务方案总结**
+    * NodePort, LoadBalancer, Ingress 三种方式的对比与选择
+    * 使用端口转发 (kubectl port-forward) 进行临时访问和调试
+    * 使用 SSH Tunnel 或 VPN 连接到集群网络
+    * 使用云平台提供的 Kubernetes 服务暴露方案 (例如 AWS Load Balancer Controller)
+
+* **第25讲：Service 监控与可观测性**
+    * Service 监控指标 (请求量、延迟、错误率)
+    * 使用 Prometheus 监控 Service 指标 (ServiceMonitor 配置)
+    * 使用 Grafana 可视化 Service 监控数据
+    * 使用 Tracing 工具 (Jaeger, Zipkin) 追踪 Service 请求链路
+    * Service 日志收集与分析 (EFK/ELK Stack, Fluentd, Loki)
+
+**阶段三：Kubernetes 存储、安全与高级特性 (约15讲)**
+
+* **第26讲：存储卷 (Volume) 类型深入与应用**
+    * emptyDir, hostPath, local Volume 的高级用法与场景
+    * configMap, secret Volume 的最佳实践
+    * persistentVolumeClaim Volume 的动态 Provisioning 流程
+    * 使用 StorageClass 定义存储策略 (Provisioner, ReclaimPolicy, VolumeBindingMode)
+    * CSI (Container Storage Interface) 插件架构与常用 CSI 插件介绍 (AWS EBS CSI, Azure Disk CSI, Google PD CSI, Ceph CSI, NFS CSI)
+
+* **第27讲：持久卷 (PersistentVolume) 管理与维护**
+    * PV 的生命周期管理 (Provisioning, Binding, Using, Releasing, Reclaiming)
+    * PV 的回收策略 (Retain, Delete, Recycle)
+    * PV 的状态监控与告警
+    * PV 的扩容 (Volume Expansion)
+    * 本地持久卷 (Local Persistent Volume) 的使用与局限性
+
+
+* **第28讲：有状态应用存储方案与数据备份**
+    * 使用 VolumeClaimTemplates 动态创建 PVC for StatefulSet
+    * 存储模式选择 for StatefulSet (Local PV vs. Network Storage)
+    * 数据备份与恢复策略 for StatefulSet (基于 Volume Snapshot, 基于应用层备份)
+    * Velero 备份工具介绍与使用 (备份 Kubernetes 资源和 PV)
+    * Disaster Recovery (DR) 方案设计 (多集群备份与恢复)
+
+* **第29讲：Kubernetes 安全概览与 RBAC (Role-Based Access Control)**
+    * Kubernetes 安全模型概述 (Authentication, Authorization, Admission Control)
+    * RBAC (Role-Based Access Control) 授权机制详解
+    * Role, ClusterRole, RoleBinding, ClusterRoleBinding 资源对象
+    * RBAC 策略配置与权限管理最佳实践
+    * Service Account 与 Pod 身份认证
+
+* **第30讲：Kubernetes 认证 (Authentication) 机制**
+    * Kubernetes 支持的认证方式 (X.509 Certificates, Static Password File, Bootstrap Tokens, OIDC, Webhook Token Authentication)
+    * 配置客户端证书认证 (kubectl config set-credentials)
+    * Service Account Token 自动挂载与 API 访问
+    * Webhook Token Authentication 扩展认证机制
+
+* **第31讲：准入控制 (Admission Control) 与安全策略**
+    * Admission Controller 的概念与作用 (请求拦截、策略校验、资源变更)
+    * 常用 Admission Controller 介绍 (AlwaysAdmit, AlwaysDeny, LimitRanger, ResourceQuota, PodSecurityPolicy, ValidatingWebhookConfiguration, MutatingWebhookConfiguration)
+    * Pod Security Policy (PSP) 安全策略详解 (Pod 权限限制、capabilities, seccomp, AppArmor, SELinux) (注意 PSP 已被 Pod Security Admission 替代，但仍需了解其概念)
+    * Pod Security Admission (PSA) 介绍 (Kubernetes 1.23+ 替代 PSP 的方案)
+    * 自定义 Admission Webhook 开发与部署 (扩展准入控制功能)
+
+* **第32讲：Secret 管理进阶与安全实践**
+    * Secret 加密存储 (Encryption at Rest) 配置 (etcd 加密)
+    * Secret 访问控制与权限管理 (RBAC 策略)
+    * Secret 的生命周期管理与轮换 (Secret Rotation)
+    * 使用外部 Secret 管理工具 (Vault, Sealed Secrets) 集成
+    * 避免在镜像中硬编码敏感信息
+
+* **第33讲：容器运行时安全与镜像安全**
+    * 容器运行时安全配置 (Security Context, capabilities, seccomp, AppArmor, SELinux)
+    * 镜像安全扫描与漏洞检测工具 (Trivy, Clair)
+    * 镜像签名与验证 (Docker Content Trust, Notary)
+    * 构建最小化安全镜像 (Base Image 选择、多阶段构建)
+    * 镜像仓库安全配置 (访问控制、镜像拉取策略)
+
+* **第34讲：Kubernetes 监控与日志体系深入**
+    * Prometheus 监控体系架构深入 (Prometheus Server, Service Discovery, Exporters, Alertmanager)
+    * Prometheus Operator 部署与使用 (简化 Prometheus 部署和管理)
+    * Grafana 可视化监控面板高级定制与告警配置
+    * EFK/ELK Stack 日志收集与分析体系深入 (Elasticsearch, Fluentd/Filebeat, Kibana)
+    * Loki 日志系统介绍与应用 (轻量级、高效日志聚合)
+    * 分布式追踪系统 (Jaeger, Zipkin) 深入与性能分析
+
+* **第35讲：Kubernetes 资源管理与调度优化**
+    * Resource Request 与 Limit 的设置与最佳实践
+    * QoS (Quality of Service) 等级 (Guaranteed, Burstable, BestEffort)
+    * 资源配额 (ResourceQuota) 与命名空间资源限制
+    * LimitRange 资源限制 (容器默认资源限制、最大/最小资源限制)
+    * Kubernetes 调度器 (Scheduler) 原理与调度策略 (默认调度器、自定义调度器)
+    * Node Affinity, Pod Affinity, Pod Anti-Affinity 调度策略详解
+    * Taints and Tolerations 污点和容忍度 (节点排斥与 Pod 容忍)
+
+* **第36讲：Horizontal Pod Autoscaler (HPA) 水平 Pod 自动伸缩**
+    * HPA 的定义与作用 (基于 CPU/Memory 指标自动伸缩 Pod 副本数)
+    * HPA 的配置详解 (targetCPUUtilizationPercentage, minReplicas, maxReplicas, metrics)
+    * HPA 的伸缩算法与策略
+    * 基于自定义指标 (Custom Metrics) 和外部指标 (External Metrics) 的 HPA
+    * Vertical Pod Autoscaler (VPA) 垂直 Pod 自动伸缩 (资源调整) 概念介绍
+
+* **第37讲：集群联邦 (Federation v2) 深入与多集群管理**
+    * Kubernetes Federation v2 架构与组件详解 (Control Plane, Cluster Registry, Placement Controller)
+    * Federation v2 的资源类型 (Federated Deployment, Federated Service, Federated ConfigMap 等)
+    * Federation v2 的跨集群资源部署与管理
+    * Federation v2 的服务发现与负载均衡
+    * 多集群管理工具 ( Rancher, Argo CD, Fleet) 介绍与对比
+
+* **第38讲：Operator 模式与自定义控制器 (Custom Controller)**
+    * Operator 模式的概念与优势 (自动化运维、扩展 Kubernetes API)
+    * Kubernetes Custom Resource Definition (CRD) 自定义资源定义
+    * 自定义 Controller 开发框架 (Operator SDK, Kubebuilder) 介绍
+    * 开发一个简单的 Kubernetes Operator 示例 (例如：自动部署应用 Operator)
+    * Operator 的生命周期管理与升级
+
+* **第39讲：Helm 包管理工具**
+    * Helm 的概念与优势 (Kubernetes 应用包管理、模板化部署)
+    * Helm 的架构 (Helm Client, Tiller - Helm v2, Helm v3 无 Tiller)
+    * Helm Chart 的结构与编写 (templates, values.yaml, Chart.yaml)
+    * Helm Chart 的安装、升级、回滚、卸载操作 (helm install, upgrade, rollback, uninstall)
+    * Helm Chart 的仓库管理 (公共仓库, 私有仓库)
+    * Helm v3 的新特性与最佳实践 (无 Tiller 架构、安全增强)
+
+* **第40讲：Serverless 与 Kubernetes 函数计算 (Function as a Service - FaaS)**
+    * Serverless 计算模式的概念与优势 (按需付费、自动伸缩、免运维)
+    * Kubernetes 函数计算框架 (Knative, OpenFaaS, Kubeless) 介绍与对比
+    * Knative Serving 组件详解 (自动伸缩、流量管理、版本控制)
+    * 使用 Knative 部署 Serverless 函数示例
+    * Serverless 函数的事件驱动机制与应用场景
+
+* **第41讲：GitOps 与持续交付 (Continuous Delivery) 实践**
+    * GitOps 的概念与优势 (声明式配置、版本控制、自动化交付)
+    * Argo CD GitOps 工具介绍与使用 (应用部署、配置同步、状态监控)
+    * Flux CD GitOps 工具介绍
+    * 基于 GitOps 的 Kubernetes 持续交付流水线搭建
+    * GitOps 的最佳实践与安全考量
+
+* **第42讲：Kubernetes 性能调优与最佳实践**
+    * Kubernetes 集群性能瓶颈分析与调优方法论
+    * etcd 性能调优 (硬件配置、参数优化、监控)
+    * API Server 性能调优 (资源限制、请求优化、缓存)
+    * Kubelet 性能调优 (资源限制、GC 调优、Eviction 策略)
+    * kube-proxy 性能调优 (IPVS 模式, conntrack 调优)
+    * 应用性能调优 (资源请求与限制、镜像优化、启动速度优化)
+
+
+
+

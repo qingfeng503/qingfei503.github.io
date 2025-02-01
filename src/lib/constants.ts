@@ -1,5 +1,5 @@
 export const WEBSITE_HOST_URL =
-  process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://ymqu823.us.kg'
+  process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://blog.ymqu823.us.kg'
 
 export const WEBSITE_NAME = 'Ymq Notes'
 export const WEBSITE_DESCRIPTION =

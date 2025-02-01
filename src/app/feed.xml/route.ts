@@ -4,13 +4,13 @@ import RSS from 'rss'
 
 export async function GET() {
   const feed = new RSS({
-    title: 'Gino Notes',
-    description: 'Gino Zhang\'s personal blog. I write about product, development and life.',
+    title: 'Ymq Notes',
+    description: 'Ymq\'s personal blog. I write about product, development and life.',
     site_url: WEBSITE_HOST_URL,
     feed_url: `${WEBSITE_HOST_URL}/feed.xml`,
     language: 'zh-CN',
     pubDate: new Date(),
-    copyright: `All rights reserved ${new Date().getFullYear()}, Gino Zhang`,
+    copyright: `All rights reserved ${new Date().getFullYear()}, Ymq`,
   })
 
   allPosts
@@ -22,7 +22,7 @@ export async function GET() {
         url: `${WEBSITE_HOST_URL}${post.url}`,
         date: new Date(post.date),
         categories: [post.category],
-        author: 'Gino Zhang',
+        author: 'Ymq',
       })
     })
 
